@@ -1,3 +1,5 @@
+import Recorder from "./components/recorder"
+
 const Header = (props) => {
   console.log(props)
   return (
@@ -49,8 +51,11 @@ const App = () => {
       />
       
       <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Recorder />
+
     </div>
   )
 }
+
 
 export default App
