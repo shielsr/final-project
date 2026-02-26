@@ -5,4 +5,5 @@ The following is a step-by-step account of how I did the project, which closely 
 
 - I began by experimenting with React. I followed Yoni's tutorials from Module 5 to set things up.
 - I followed the YouTube tutorial here to create a Recorder component: https://www.youtube.com/watch?v=cG5G0DcTSGI
-
+- Set up the timer and the record/stop button switching
+- Set up MediaRecorder API. Successfully recorded audio in browser.
