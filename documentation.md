@@ -9,6 +9,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Set up MediaRecorder API. Successfully recorded audio in browser.
 - Read documentation on Assembly AI, the speech-to-text API
 - Installed Assembly AI npm package
+<<<<<<< HEAD
 - Successfully sent my recorded audio file to Assembly and got back a transcription.
 - Once I did the above prototype, I switched my attention to Django and installed Django.
 - Followed Yoni's REST tutorial from the Frameworks module to set up Django REST
@@ -22,3 +23,6 @@ NoteCap
 Barinote
 Sopranote
 Undernote
+=======
+
+>>>>>>> 3dce6d8e3e680d3bcf44e6fc4bbfe2207a5519ad
