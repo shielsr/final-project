@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { FaCircleStop, FaMicrophone } from 'react-icons/fa6'
+import Transcriber from './transcriber'
 
 export default function Recorder() {
 
     const [isRecording, setIsRecording] = useState(false)
     const [recordedURL, setRecordedURL] = useState('')
+    const [recordedBlob, setRecordedBlob] = useState(null)
     const [seconds, setSeconds] = useState(0)
 
     const mediaStream = useRef(null)
@@ -28,10 +30,10 @@ export default function Recorder() {
             }, 1000)
 
             mediaRecorder.current.onstop = () => {
-                const recordedBlob = new Blob(chunks.current,{type: 'audio/mp3'})
+                const recordedBlob = new Blob(chunks.current, { type: 'audio/mp3' })
                 const url = URL.createObjectURL(recordedBlob)
                 setRecordedURL(url)
-
+                setRecordedBlob(recordedBlob)
                 chunks.current = []
                 clearTimeout(timer)
             }
@@ -46,7 +48,7 @@ export default function Recorder() {
 
     const stopRecording = () => {
         setIsRecording(false)
-        if(mediaRecorder.current){
+        if (mediaRecorder.current) {
             mediaRecorder.current.stop()
             mediaStream.current.getTracks().forEach(track => track.stop())
         }
@@ -79,6 +81,7 @@ export default function Recorder() {
             }
 
             {recordedURL && <audio controls src={recordedURL} />}
+            {recordedBlob && <Transcriber audioBlob={recordedBlob} />}
         </div>
     )
 }
