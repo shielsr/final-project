@@ -7,3 +7,18 @@ The following is a step-by-step account of how I did the project, which closely 
 - I followed the YouTube tutorial here to create a Recorder component: https://www.youtube.com/watch?v=cG5G0DcTSGI
 - Set up the timer and the record/stop button switching
 - Set up MediaRecorder API. Successfully recorded audio in browser.
+- Read documentation on Assembly AI, the speech-to-text API
+- Installed Assembly AI npm package
+- Successfully sent my recorded audio file to Assembly and got back a transcription.
+- Once I did the above prototype, I switched my attention to Django and installed Django.
+- Followed Yoni's REST tutorial from the Frameworks module to set up Django REST
+
+
+
+Brainstorming name ideas:
+
+NoteCat
+NoteCap
+Barinote
+Sopranote
+Undernote
