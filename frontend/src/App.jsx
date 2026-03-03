@@ -70,7 +70,7 @@ const App = () => {
 
   return (
     <main className="content">
-      <h1 className="text-center text-decoration-underline my-4">Our Django + React Audio app</h1>
+      <h1 className="text-center text-decoration-underline my-4">My Django + React Audio app</h1>
       <div className="row">
         <div className="col-md-6 col-sm-10 mx-auto p-0">
           <div className="card p-3">

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build": "vite build && cp dist/index.html ../backend/static/ && cp -r dist/assets/* ../backend/static/",
     "lint": "eslint .",
     "preview": "vite preview"
   },
