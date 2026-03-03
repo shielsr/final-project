@@ -3,32 +3,12 @@ import { useState, useEffect } from 'react'
 import { getAudios, createAudio, updateAudio, deleteAudio } from './utils/api'
 import AudioModal from './components/Modal'
 
-
-const TabList = ({ viewCompleted, setViewCompleted }) => (
-  <div className='nav nav-tabs'>
-    <button
-      type='button'
-      onClick={() => setViewCompleted(false)}
-      className={`nav-link ${viewCompleted ? '' : 'active'}`}
-    >
-      On your plate
-    </button>
-    <button
-      type='button'
-      onClick={() => setViewCompleted(true)}
-      className={`nav-link ${viewCompleted ? 'active' : ''}`}
-    >
-      Already done
-    </button>
-  </div>
-)
-
 const AudioItem = ({ item, onEdit, onDelete }) => (
   <li className='list-group-item d-flex justify-content-between align-items-center'>
     <button
       type='button'
       onClick={() => onEdit(item)}
-      className={`audio-title me-2 btn btn-link text-start p-0 ${item.completed ? 'completed-audio' : ''}`}
+      className='audio-title me-2 btn btn-link text-start p-0'
       title={item.description}
     >
       {item.title}
@@ -40,37 +20,31 @@ const AudioItem = ({ item, onEdit, onDelete }) => (
   </li>
 )
 
-const AudioList = ({ items, viewCompleted, onEdit, onDelete }) => {
-  const relevantItems = items.filter(item => item.completed === viewCompleted)
-  return (
-    <ul className='list-group list-group-flush'>
-      {relevantItems.map(item => (
-        <AudioItem
-          key={item.id}
-          item={item}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      ))}
-    </ul>
-  )
-}
+const AudioList = ({ items, onEdit, onDelete }) => (
+  <ul className='list-group list-group-flush'>
+    {items.map(item => (
+      <AudioItem
+        key={item.id}
+        item={item}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    ))}
+  </ul>
+)
 
 const App = () => {
   const [audioList, setAudioList] = useState([])
-  const [viewCompleted, setViewCompleted] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [activeItem, setActiveItem] = useState({
     title: '',
     description: '',
-    completed: false,
   })
 
-  // Initialize audios once, via `useEffect`
   useEffect(() => { getAudios(setAudioList) }, [])
 
   const handleCreate = () => {
-    setActiveItem({ title: '', description: '', completed: false })
+    setActiveItem({ title: '', description: '' })
     setShowModal(true)
   }
 
@@ -103,10 +77,8 @@ const App = () => {
             <button onClick={handleCreate} className="btn btn-primary my-1">
               New Task
             </button>
-            <TabList viewCompleted={viewCompleted} setViewCompleted={setViewCompleted} />
             <AudioList
               items={audioList}
-              viewCompleted={viewCompleted}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />

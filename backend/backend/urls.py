@@ -16,10 +16,13 @@ Including another URLconf
 """
 
 
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
-from rest_framework import routers
+from django.urls import include, path, re_path
+from django.views.static import serve
 
+from rest_framework import routers
 from undernote import views
 
 router = routers.DefaultRouter()
@@ -28,4 +31,5 @@ router.register(r"audiofiles", views.AudioView, "audio")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
-]
+    re_path(r"^$", serve, kwargs={"path": "index.html", "document_root": settings.STATIC_ROOT}),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

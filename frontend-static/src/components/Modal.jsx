@@ -46,7 +46,6 @@ const AudioModal = ({ activeItem, toggle, onSave }) => {
         <Form onSubmit={handleSubmit}>
           <RequiredTextField name='title' value={title} setValue={setTitle} />
           <RequiredTextField name='description' value={description} setValue={setDescription} />
-          <CheckboxField name='completed' value={completed} setValue={setCompleted} />
           <Button color='success' type='submit'>Save</Button>
         </Form>
       </ModalBody>
