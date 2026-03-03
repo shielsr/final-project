@@ -13,7 +13,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Once I did the above prototype, I switched my attention to Django and installed Django.
 - Followed Yoni's REST tutorial from the Frameworks module to set up Django REST in backend folder
 - Followed Unit 15 tutorial to set up the frontend-static
-
+- Set up the proper frontend, then connected the frontend and backend
 
 
 Brainstorming name ideas:
