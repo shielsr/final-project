@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
     "build": "vite build && cp dist/index.html ../backend/static/ && cp -r dist/assets/* ../backend/static/",
     "preview": "vite preview"
   },
   "dependencies": {
+    "assemblyai": "^4.25.0",
     "axios": "^1.13.6",
     "bootstrap": "^5.3.8",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-icons": "^5.6.0",
     "reactstrap": "^9.2.3"
   },
   "devDependencies": {

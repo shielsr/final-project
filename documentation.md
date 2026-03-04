@@ -14,7 +14,10 @@ The following is a step-by-step account of how I did the project, which closely 
 - Followed Yoni's REST tutorial from the Frameworks module to set up Django REST in backend folder
 - Followed Unit 15 tutorial to set up the frontend-static
 - Set up the proper frontend, then connected the frontend and backend
-- Completed part 4, building for production. Tried testing on Render.
+- Completed part 4, building for production. Tried testing on Render (couldn't do it yet)
+- Started moving my Recorder and Transcriber components over from my test app
+- Had to install things like react-icons for the above to components to work
+- Followed tutorials on 
 
 
 Brainstorming name ideas:

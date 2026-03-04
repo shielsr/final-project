@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { FaCircleStop, FaMicrophone } from 'react-icons/fa6'
-import Transcriber from './transcriber'
+import Transcriber from './Transcriber'
 
 export default function Recorder() {
 

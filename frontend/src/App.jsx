@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { getAudios, createAudio, updateAudio, deleteAudio } from './utils/api'
 import AudioModal from './components/Modal'
+import Recorder from "./components/Recorder"
 
 const AudioItem = ({ item, onEdit, onDelete }) => (
   <li className='list-group-item d-flex justify-content-between align-items-center'>
@@ -92,6 +93,7 @@ const App = () => {
           onSave={handleSubmit}
         />
       )}
+      <Recorder />
     </main>
   )
 }
