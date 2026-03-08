@@ -56,6 +56,7 @@ export default function Recorder({ setAudioList }) {
                 const url = URL.createObjectURL(recordedBlob)
                 setRecordedURL(url)
                 setRecordedBlob(recordedBlob)
+                setFileSize(recordedBlob.size)
                 chunks.current = []
                 clearTimeout(timer)
             }
@@ -87,12 +88,14 @@ export default function Recorder({ setAudioList }) {
                 description: '',
                 url: data.secure_url,       // URL returned by Cloudinary
                 duration: Math.round(data.duration ?? seconds), // prefer Cloudinary's duration, fall back to our timer
+                file_size: fileSize // This is in bytes
             }, setAudioList)
             // ADDED: reset state after successful save
             setRecordedURL('')
             setRecordedBlob(null)
             setTitle('')
             setSeconds(0)
+            setFileSize(null)
         } catch (err) {
             console.error(err)
         } finally {

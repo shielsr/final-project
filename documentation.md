@@ -19,7 +19,9 @@ The following is a step-by-step account of how I did the project, which closely 
 - Had to install things like react-icons for the above to components to work
 - Connected to Cloudinary API. Read tutorials on Cloudinary Docs: https://cloudinary.com/documentation/upload_images_with_fetch_api_tutorial
 - Can allow the user to save their audio files to Cloudinary
-
+- Set up more database tables
+- Captured filesize data of the blob from MediaRecorerAPI
+- Also added Project to the Audio model, to assign the file to a project
 
 Brainstorming name ideas:
 
@@ -28,3 +30,10 @@ NoteCap
 Barinote
 Sopranote
 Undernote
+
+
+Tables
+
+## Project
+An important part of the Audio/Project relationship was that I want users to record something without adding it to a project. Again, it's all about convenience - a user should be able to come back later and assign the file to a project (if they want). Also, when a project is deleted, the audio files should not be deleted, and just return to the unassigned pool.
+
