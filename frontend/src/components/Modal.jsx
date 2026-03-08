@@ -46,6 +46,11 @@ const AudioModal = ({ activeItem, toggle, onSave }) => {
         <Form onSubmit={handleSubmit}>
           <RequiredTextField name='title' value={title} setValue={setTitle} />
           <RequiredTextField name='description' value={description} setValue={setDescription} />
+           <div className='text-muted small mb-3'>
+            {activeItem.duration && <div>⏱ Duration: {formatDuration(activeItem.duration)}</div>}
+            {activeItem.file_size && <div>💾 File size: {formatFileSize(activeItem.file_size)}</div>}
+            {activeItem.created_at && <div>🗓 Recorded: {new Date(activeItem.created_at).toLocaleDateString()}</div>}
+          </div>
           <Button color='success' type='submit'>Save</Button>
         </Form>
       </ModalBody>

@@ -4,4 +4,4 @@ from .models import Audio
 class AudioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Audio
-        fields = ('id', 'title', 'description', 'duration', 'url')
+        fields = ('id', 'title', 'description', 'duration', 'url', 'file_size', 'created_at')

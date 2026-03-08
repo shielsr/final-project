@@ -6,7 +6,7 @@ import { createAudio } from '../utils/api'
 
 const uploadToCloudinary = async (blob, title) => {
     const formData = new FormData()
-    formData.append('file', blob, 'recording.mp3')
+    formData.append('file', blob, title)
     formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
     formData.append('resource_type', 'video') // Cloudinary treats audio as 'video'
     formData.append('public_id', title) // Pass the title to Cloudinary as the filename
@@ -54,6 +54,7 @@ export default function Recorder({ setAudioList }) {
 
             mediaRecorder.current.onstop = () => {
                 const recordedBlob = new Blob(chunks.current, { type: 'audio/mp3' })
+                console.log('file size:', recordedBlob.size)
                 const url = URL.createObjectURL(recordedBlob)
                 setRecordedURL(url)
                 setRecordedBlob(recordedBlob)
@@ -84,6 +85,7 @@ export default function Recorder({ setAudioList }) {
         setUploading(true)
         try {
             const data = await uploadToCloudinary(recordedBlob, title)
+            console.log('fileSize at save time:', fileSize)
             await createAudio({
                 title,
                 description: '',

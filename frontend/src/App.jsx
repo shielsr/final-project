@@ -4,6 +4,18 @@ import { getAudios, createAudio, updateAudio, deleteAudio } from './utils/api'
 import AudioModal from './components/Modal'
 import Recorder from "./components/Recorder"
 
+const formatDuration = (seconds) => {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${String(s).padStart(2, '0')}`
+}
+
+const formatFileSize = (bytes) => {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
 const AudioItem = ({ item, onEdit, onDelete }) => (
   <li className='list-group-item d-flex justify-content-between align-items-center'>
     <button
@@ -14,6 +26,11 @@ const AudioItem = ({ item, onEdit, onDelete }) => (
     >
       {item.title}
     </button>
+    <div className='text-muted small mt-1'>
+      {item.duration && <span className='me-3'>⏱ {formatDuration(item.duration)}</span>}
+      {item.file_size && <span className='me-3'>💾 {formatFileSize(item.file_size)}</span>}
+      {item.created_at && <span>🗓 {new Date(item.created_at).toLocaleDateString()}</span>}
+    </div>
     <span>
       <button onClick={() => onEdit(item)} className='btn btn-secondary mx-1'>Edit</button>
       <button onClick={() => onDelete(item)} className='btn btn-danger mx-1'>Delete</button>
