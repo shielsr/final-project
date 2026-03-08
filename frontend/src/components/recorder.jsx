@@ -1,13 +1,33 @@
 import React, { useRef, useState } from 'react'
 import { FaCircleStop, FaMicrophone } from 'react-icons/fa6'
 import Transcriber from './Transcriber'
+import { createAudio } from '../utils/api'
 
-export default function Recorder() {
+
+const uploadToCloudinary = async (blob, title) => {
+    const formData = new FormData()
+    formData.append('file', blob, 'recording.mp3')
+    formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
+    formData.append('resource_type', 'video') // Cloudinary treats audio as 'video'
+    formData.append('public_id', title) // Pass the title to Cloudinary as the filename
+
+    const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/video/upload`,
+        { method: 'POST', body: formData }
+    )
+    return res.json()
+}
+
+
+
+export default function Recorder({ setAudioList }) {
 
     const [isRecording, setIsRecording] = useState(false)
     const [recordedURL, setRecordedURL] = useState('')
     const [recordedBlob, setRecordedBlob] = useState(null)
     const [seconds, setSeconds] = useState(0)
+    const [title, setTitle] = useState('')
+    const [uploading, setUploading] = useState(false)
 
     const mediaStream = useRef(null)
     const mediaRecorder = useRef(null)
@@ -15,6 +35,8 @@ export default function Recorder() {
 
     const startRecording = async () => {
         setIsRecording(true)
+        setRecordedURL('')
+        setRecordedBlob(null)
         try {
             setSeconds(0)
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -54,6 +76,30 @@ export default function Recorder() {
         }
     }
 
+    // Upload to Cloudinary then save to Django
+    const handleSave = async () => {
+        if (!recordedBlob || !title) return
+        setUploading(true)
+        try {
+            const data = await uploadToCloudinary(recordedBlob, title)
+            await createAudio({
+                title,
+                description: '',
+                url: data.secure_url,       // URL returned by Cloudinary
+                duration: Math.round(data.duration ?? seconds), // prefer Cloudinary's duration, fall back to our timer
+            }, setAudioList)
+            // ADDED: reset state after successful save
+            setRecordedURL('')
+            setRecordedBlob(null)
+            setTitle('')
+            setSeconds(0)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setUploading(false)
+        }
+    }
+
     const formatTime = (totalSeconds) => {
         const hours = Math.floor(totalSeconds / 3600)
         const minutes = Math.floor((totalSeconds % 3600) / 60)
@@ -81,6 +127,20 @@ export default function Recorder() {
             }
 
             {recordedURL && <audio controls src={recordedURL} />}
+
+            {recordedBlob && (
+                <div>
+                    <input
+                        type='text'
+                        placeholder='Recording title'
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                    />
+                    <button onClick={handleSave} disabled={!title || uploading}>
+                        {uploading ? 'Saving...' : 'Save Recording'}
+                    </button>
+                </div>
+            )}
             {recordedBlob && <Transcriber audioBlob={recordedBlob} />}
         </div>
     )

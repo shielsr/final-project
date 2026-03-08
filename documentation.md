@@ -17,7 +17,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Completed part 4, building for production. Tried testing on Render (couldn't do it yet)
 - Started moving my Recorder and Transcriber components over from my test app
 - Had to install things like react-icons for the above to components to work
-- Followed tutorials on 
+- Connected to Cloudinary API. Read tutorials on Cloudinary Docs: https://cloudinary.com/documentation/upload_images_with_fetch_api_tutorial
+- Can allow the user to save their audio files to Cloudinary
 
 
 Brainstorming name ideas:

@@ -71,29 +71,41 @@ const App = () => {
 
   return (
     <main className="content">
-      <h1 className="text-center text-decoration-underline my-4">My Django + React Audio app</h1>
-      <div className="row">
-        <div className="col-md-6 col-sm-10 mx-auto p-0">
-          <div className="card p-3">
-            <button onClick={handleCreate} className="btn btn-primary my-1">
-              New Task
-            </button>
-            <AudioList
-              items={audioList}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
+      <div className="container-sm w-50">
+        <h1 className="text-center my-4">Overnote</h1>
+        <h2 className="text-center my-4">The notetaking app for songwriters</h2>
+
+        <div className="card my-4">
+          <div className="card-body text-center">
+            <h5 className="card-title">Record audio</h5>
+            <Recorder setAudioList={setAudioList} />
           </div>
         </div>
+
+        <div className="row">
+          <div className="col-md-10 col-sm-10 mx-auto p-0">
+            <div className="card p-3">
+              {/* <button onClick={handleCreate} className="btn btn-primary my-1">
+                New Task
+              </button> */}
+              <AudioList
+                items={audioList}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            </div>
+          </div>
+        </div>
+        {showModal && (
+          <AudioModal
+            activeItem={activeItem}
+            toggle={toggleModal}
+            onSave={handleSubmit}
+          />
+        )}
+
+
       </div>
-      {showModal && (
-        <AudioModal
-          activeItem={activeItem}
-          toggle={toggleModal}
-          onSave={handleSubmit}
-        />
-      )}
-      <Recorder />
     </main>
   )
 }

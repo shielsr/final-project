@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('undernote', '0002_remove_audio_duration_remove_audio_url'),
+        ('overnote', '0002_remove_audio_duration_remove_audio_url'),
     ]
 
     operations = [
