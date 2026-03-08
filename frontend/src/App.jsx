@@ -3,18 +3,7 @@ import { useState, useEffect } from 'react'
 import { getAudios, createAudio, updateAudio, deleteAudio } from './utils/api'
 import AudioModal from './components/Modal'
 import Recorder from "./components/Recorder"
-
-const formatDuration = (seconds) => {
-  const m = Math.floor(seconds / 60)
-  const s = seconds % 60
-  return `${m}:${String(s).padStart(2, '0')}`
-}
-
-const formatFileSize = (bytes) => {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
+import { formatDuration, formatFileSize } from './utils/formatMetadata'
 
 const AudioItem = ({ item, onEdit, onDelete }) => (
   <li className='list-group-item d-flex justify-content-between align-items-center'>

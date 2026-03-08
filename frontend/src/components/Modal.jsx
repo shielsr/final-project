@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap'
+import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 
 const RequiredTextField = ({ name, value, setValue }) => (
   <FormGroup>
@@ -49,7 +50,7 @@ const AudioModal = ({ activeItem, toggle, onSave }) => {
            <div className='text-muted small mb-3'>
             {activeItem.duration && <div>⏱ Duration: {formatDuration(activeItem.duration)}</div>}
             {activeItem.file_size && <div>💾 File size: {formatFileSize(activeItem.file_size)}</div>}
-            {activeItem.created_at && <div>🗓 Recorded: {new Date(activeItem.created_at).toLocaleDateString()}</div>}
+            {activeItem.created_at && <div>🗓 Recorded: {new Date(activeItem.created_at).toLocaleString()}</div>}
           </div>
           <Button color='success' type='submit'>Save</Button>
         </Form>

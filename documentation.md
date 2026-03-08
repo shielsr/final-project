@@ -22,6 +22,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Set up more database tables
 - Captured filesize data of the blob from MediaRecorerAPI and added it to the Audio model
 - Also added Project to the Audio model, to assign the file to a project
+- Updated Modal.jsx component to show metadata on the audio file
 
 Brainstorming name ideas:
 
@@ -37,3 +38,5 @@ Tables
 ## Project
 An important part of the Audio/Project relationship was that I want users to record something without adding it to a project. Again, it's all about convenience - a user should be able to come back later and assign the file to a project (if they want). Also, when a project is deleted, the audio files should not be deleted, and just return to the unassigned pool.
 
+# Audio metadata
+I wanted to show audio metadate in a few places. The duration and file size are saved in seconds and bytes, so need to be formatted. I wrote standard JS to format them, and to make the formatters available to all components I created a utils/metadata.js file.
