@@ -20,7 +20,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Connected to Cloudinary API. Read tutorials on Cloudinary Docs: https://cloudinary.com/documentation/upload_images_with_fetch_api_tutorial
 - Can allow the user to save their audio files to Cloudinary
 - Set up more database tables
-- Captured filesize data of the blob from MediaRecorerAPI
+- Captured filesize data of the blob from MediaRecorerAPI and added it to the Audio model
 - Also added Project to the Audio model, to assign the file to a project
 
 Brainstorming name ideas:

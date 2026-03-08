@@ -28,6 +28,7 @@ export default function Recorder({ setAudioList }) {
     const [seconds, setSeconds] = useState(0)
     const [title, setTitle] = useState('')
     const [uploading, setUploading] = useState(false)
+    const [fileSize, setFileSize] = useState(null)
 
     const mediaStream = useRef(null)
     const mediaRecorder = useRef(null)
