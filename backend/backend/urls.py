@@ -31,7 +31,7 @@ router.register(r"audiofiles", views.AudioView, "audio")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
-    path('api/auth', include('authentication.urls')),
+    path('api/auth/', include('authentication.urls')),
     path("api/transcribe/", views.transcribe_audio), # For the Django-based Assembly AI transcriptions
     re_path(r"^$", serve, kwargs={"path": "index.html", "document_root": settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

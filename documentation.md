@@ -24,7 +24,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Also added Project to the Audio model, to assign the file to a project
 - Updated Modal.jsx component to show metadata on the audio file
 - Added Cowriter table to db
-- Set up Authentication, followign the tutorial from Unit 16.
+- Set up Authentication, following the tutorial from Unit 16.
+
 
 
 Brainstorming name ideas:
@@ -47,7 +48,8 @@ I wanted to show audio metadate in a few places. The duration and file size are 
 # Moving AssemblyAI API call from React to Django
 I built the original prototype full in React. This included the transcription API call to AssemblyAI. On Yoni's advice, I moved it from React to Django. This avoided security concerns. It was a major hassle. I returned to the AssemblyAI docs. Set up console logs to track where things were failing.
 
-
+# Authentication
+I followed the Unit 16 tutorial so it largely went smoothly. A challenge I encountered invovled my already having an /api/ url pattern from the earlier audio part. I had to use /api/auth/ instead and update the tutorial code accordingly. I obviously wouldn't have encountered this if I had done the Authentication before doing the audio recording component, so will know for future projects.
 
 
 ## The flow of data when recording and transcribing

@@ -7,18 +7,11 @@ from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from .serializers import AudioSerializer, RegisterSerializer
+from .serializers import AudioSerializer
 from .models import Audio, Transcription
 
-
-# Auth-related imports from Unit 16 tutorial (excluding RegisterSerializer)
-from django.contrib.auth.models import User
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status
 
 
 class DebugDisableAuthentication(TokenAuthentication):
@@ -66,20 +59,3 @@ def transcribe_audio(request):
         return Response({'transcription': result.text})
     except Exception as e:
         return Response({'error': str(e)}, status=500)
-    
-
-# View related to Authentication
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }, status=status.HTTP_201_CREATED)
