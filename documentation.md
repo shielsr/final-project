@@ -41,3 +41,7 @@ An important part of the Audio/Project relationship was that I want users to rec
 
 # Audio metadata
 I wanted to show audio metadate in a few places. The duration and file size are saved in seconds and bytes, so need to be formatted. I wrote standard JS to format them, and to make the formatters available to all components I created a utils/metadata.js file.
+
+# Moving AssemblyAI API call from React to Django
+I built the original prototype full in React. This included the transcription API call to AssemblyAI. On Yoni's advice, I moved it from React to Django. This avoided security concerns. [SAY MORE HERE]
+
