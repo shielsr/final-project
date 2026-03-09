@@ -56,7 +56,7 @@ export default function Recorder({ setAudioList }) {
 
             mediaRecorder.current.onstop = () => {
                 const recordedBlob = new Blob(chunks.current, { type: 'audio/mp3' })
-                console.log('file size:', recordedBlob.size)
+                // console.log('file size:', recordedBlob.size)
                 const url = URL.createObjectURL(recordedBlob)
                 setRecordedURL(url)
                 setRecordedBlob(recordedBlob)
@@ -87,7 +87,7 @@ export default function Recorder({ setAudioList }) {
         setUploading(true)
         try {
             const data = await uploadToCloudinary(recordedBlob, title)
-            console.log('fileSize at save time:', fileSize)
+            // console.log('fileSize at save time:', fileSize)
             const audio = await createAudio({
                 title,
                 description: '',
@@ -95,7 +95,7 @@ export default function Recorder({ setAudioList }) {
                 duration: Math.round(data.duration ?? seconds), // prefer Cloudinary's duration, fall back to our timer
                 file_size: fileSize // This is in bytes
             }, setAudioList)
-            console.log('audio received in handleSave:', audio)  // ← what does this show?
+            // console.log('audio received in handleSave:', audio)  // ← what does this show?
             setSavedAudio(audio) // The object with all its fields
             setRecordedURL('')
             setRecordedBlob(null)

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'authentication',
     'overnote',
 ]
 
@@ -140,3 +141,25 @@ STATIC_URL = "/assets/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Auth
+ALLOWED_HOSTS = []
+
+# This is the URL where the frontend will be running
+# We only allow requests from this URL
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
+
+# This setting is required to allow the frontend to send cookies
+# with the requests
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# JWT settings
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}

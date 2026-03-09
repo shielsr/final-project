@@ -24,6 +24,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Also added Project to the Audio model, to assign the file to a project
 - Updated Modal.jsx component to show metadata on the audio file
 - Added Cowriter table to db
+- Set up Authentication, followign the tutorial from Unit 16.
+
 
 Brainstorming name ideas:
 

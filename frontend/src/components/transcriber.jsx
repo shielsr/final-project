@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 export default function Transcriber({ audioUrl, audioId }) {
-    console.log('Transcriber props:', { audioUrl, audioId })
+    // console.log('Transcriber props:', { audioUrl, audioId })
     const [transcription, setTranscription] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
