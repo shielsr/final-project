@@ -1,33 +1,23 @@
-import React, { useMemo, useState } from 'react'
-import { AssemblyAI } from 'assemblyai'
+import { useState } from 'react'
 
-const BASE_URL = 'https://api.eu.assemblyai.com'
-
-export default function Transcriber({ audioBlob }) {
-
-    const [transcript, setTranscript] = useState('')
+export default function Transcriber({ audioUrl, audioId }) {
+    console.log('Transcriber props:', { audioUrl, audioId })
+    const [transcription, setTranscription] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-
-    const client = useMemo(() => new AssemblyAI({
-        apiKey: import.meta.env.VITE_ASSEMBLYAI_API_KEY,
-        baseUrl: BASE_URL
-    }), [])
 
     const run = async () => {
         setLoading(true)
         setError('')
         try {
-            const result = await client.transcripts.transcribe({
-                audio: audioBlob,
-                speech_models: ["universal-3-pro", "universal-2"],
-                language_detection: true,
-                speaker_labels: true,
+            const res = await fetch('/api/transcribe/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: audioUrl, audio_id: audioId })
             })
-
-            if (result.status === 'error') throw new Error(result.error)
-
-            setTranscript(result.text)
+            const data = await res.json()
+            if (data.error) throw new Error(data.error)
+            setTranscription(data.transcription)
         } catch (err) {
             setError(err.message)
         } finally {
@@ -37,11 +27,11 @@ export default function Transcriber({ audioBlob }) {
 
     return (
         <div>
-            <button onClick={run} disabled={!audioBlob || loading}>
+            <button onClick={run} disabled={!audioUrl || loading}>
                 {loading ? 'Transcribing...' : 'Transcribe'}
             </button>
             {error && <p>{error}</p>}
-            {transcript && <p>{transcript}</p>}
+            {transcription && <p>{transcription}</p>}
         </div>
     )
 }

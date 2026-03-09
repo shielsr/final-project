@@ -30,6 +30,7 @@ export default function Recorder({ setAudioList }) {
     const [title, setTitle] = useState('')
     const [uploading, setUploading] = useState(false)
     const [fileSize, setFileSize] = useState(null)
+    const [savedAudio, setSavedAudio] = useState(null)
 
     const mediaStream = useRef(null)
     const mediaRecorder = useRef(null)
@@ -87,14 +88,15 @@ export default function Recorder({ setAudioList }) {
         try {
             const data = await uploadToCloudinary(recordedBlob, title)
             console.log('fileSize at save time:', fileSize)
-            await createAudio({
+            const audio = await createAudio({
                 title,
                 description: '',
                 url: data.secure_url,       // URL returned by Cloudinary
                 duration: Math.round(data.duration ?? seconds), // prefer Cloudinary's duration, fall back to our timer
                 file_size: fileSize // This is in bytes
             }, setAudioList)
-            // ADDED: reset state after successful save
+            console.log('audio received in handleSave:', audio)  // ← what does this show?
+            setSavedAudio(audio) // The object with all its fields
             setRecordedURL('')
             setRecordedBlob(null)
             setTitle('')
@@ -148,7 +150,7 @@ export default function Recorder({ setAudioList }) {
                     </button>
                 </div>
             )}
-            {recordedBlob && <Transcriber audioBlob={recordedBlob} />}
+            {savedAudio && <Transcriber audioUrl={savedAudio.url} audioId={savedAudio.id} />}
         </div>
     )
 }

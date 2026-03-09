@@ -8,10 +8,11 @@ export const getAudios = (setAudioList) => {
     .catch(console.error)
 }
 
-export const createAudio = (item, setAudioList) => {
-  api.post('/', item)
-    .then(() => getAudios(setAudioList))
-    .catch(console.error)
+export const createAudio = async (item, setAudioList) => {
+  const res = await api.post('/', item)
+  await getAudios(setAudioList)
+  console.log('createAudio returning:', res.data) 
+  return res.data    // Return the saved audio object so we can get its id
 }
 
 export const updateAudio = (item, setAudioList) => {

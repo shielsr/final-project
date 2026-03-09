@@ -111,6 +111,7 @@ dependencies = [
     { name = "django-cors-headers" },
     { name = "djangorestframework" },
     { name = "gunicorn" },
+    { name = "python-dotenv" },
     { name = "whitenoise" },
 ]
 
@@ -121,6 +122,7 @@ requires-dist = [
     { name = "django-cors-headers", specifier = ">=4.9.0" },
     { name = "djangorestframework", specifier = ">=3.16.1" },
     { name = "gunicorn", specifier = ">=25.1.0" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "whitenoise", specifier = ">=6.12.0" },
 ]
 

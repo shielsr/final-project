@@ -39,3 +39,11 @@ class CoWriter(models.Model):
 
     def __str__(self):
         return f"{self.user.username} on {self.project.title}"
+    
+class Transcription(models.Model):
+    audio = models.OneToOneField(Audio, on_delete=models.CASCADE, related_name='transcription')
+    content = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Transcription for {self.audio.title}"
