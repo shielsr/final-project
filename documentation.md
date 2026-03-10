@@ -25,8 +25,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Updated Modal.jsx component to show metadata on the audio file
 - Added Cowriter table to db
 - Set up Authentication, following the tutorial from Unit 16.
-
-
+- Used the React Router to set up my first two pages, Home.jsx and Record.jsx
+- Created an AudioDetail.jsx page, to replace the Reactstrap modal.
 
 Brainstorming name ideas:
 

@@ -12,7 +12,8 @@ const Navigation = () => {
 
   return (
     <nav>
-      <h1><NavLink to="/">Overnote</NavLink></h1>
+      <h1 className="text-center my-4"><NavLink to="/record">Overnote</NavLink></h1>
+        <h2 className="text-center my-4">The notetaking app for songwriters</h2>
       <ul>
         {isLoggedIn ? (
           <>

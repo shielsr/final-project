@@ -90,7 +90,7 @@ export const Register = () => {
     await apiRegister(formData.username, formData.email, formData.password);
     const loginData = await apiLogin(formData.username, formData.password);
     login(loginData.access, loginData.refresh, formData.username);
-    navigate("/private");
+    navigate("/record");
   };
 
   const fields = [

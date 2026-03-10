@@ -5,17 +5,11 @@ import { getAudios, createAudio, updateAudio, deleteAudio } from '../utils/api'
 import AudioModal from '../components/Modal'
 import Recorder from '../components/Recorder'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
+import { Link } from 'react-router-dom'
 
 const AudioItem = ({ item, onEdit, onDelete }) => (
   <li className='list-group-item d-flex justify-content-between align-items-center'>
-    <button
-      type='button'
-      onClick={() => onEdit(item)}
-      className='audio-title me-2 btn btn-link text-start p-0'
-      title={item.description}
-    >
-      {item.title}
-    </button>
+    <Link to={`/audio/${item.id}`}>{item.title}</Link>
     <div className='text-muted small mt-1'>
       {item.duration && <span className='me-3'>⏱ {formatDuration(item.duration)}</span>}
       {item.file_size && <span className='me-3'>💾 {formatFileSize(item.file_size)}</span>}
@@ -80,8 +74,7 @@ const Record = () => {
   return (
     <main className="content">
       <div className="container-sm w-50">
-        <h1 className="text-center my-4">Overnote</h1>
-        <h2 className="text-center my-4">The notetaking app for songwriters</h2>
+        
 
         <div className="card my-4">
           <div className="card-body text-center">
