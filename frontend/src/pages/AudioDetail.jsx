@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 import { updateAudio, api } from '../utils/api'
+import Transcriber from '../components/Transcriber'
 
 const AudioDetail = () => {
     const { id } = useParams()
@@ -27,6 +28,15 @@ const AudioDetail = () => {
             })
     }, [id])
 
+    // When the transcription comes in, refresh the audio so we can hide the Transcribe button
+    const refreshAudio = () => {
+        api.get(`/${id}/`)
+            .then(res => setAudio(res.data))
+            .catch(err => console.error('Failed to refresh audio:', err))
+    }
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
         updateAudio({ ...audio, title, description }, () => { })
@@ -46,13 +56,17 @@ const AudioDetail = () => {
                     {audio.file_size && <div>💾 File size: {formatFileSize(audio.file_size)}</div>}
                     {audio.created_at && <div>🗓 Recorded: {new Date(audio.created_at).toLocaleString()}</div>}
                 </div>
+
+
                 <div className='transcription'>
                     <h3>Transcription:</h3>
                     {audio.transcription
                         ? <p>{audio.transcription.content}</p>
-                        : <p>No transcript available.</p>
+                        : <Transcriber audioUrl={audio.url} audioId={audio.id} onComplete={refreshAudio} />
                     }
                 </div>
+                
+                {/* When transcription finishes, AudioDetail re-fetches the audio from Django, so as to not showing the Transcribe button after the transcription has arrived */}
 
 
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Transcriber({ audioUrl, audioId }) {
+export default function Transcriber({ audioUrl, audioId, onComplete }) {
     // console.log('Transcriber props:', { audioUrl, audioId })
     const [transcription, setTranscription] = useState('')
     const [loading, setLoading] = useState(false)
@@ -18,6 +18,7 @@ export default function Transcriber({ audioUrl, audioId }) {
             const data = await res.json()
             if (data.error) throw new Error(data.error)
             setTranscription(data.transcription)
+            if (onComplete) onComplete()  // For refreshing the audio after getting a transcription
         } catch (err) {
             setError(err.message)
         } finally {
