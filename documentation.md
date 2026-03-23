@@ -29,6 +29,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Created an AudioDetail.jsx page, to replace the Reactstrap modal.
 - Removed redundant folders (frontend-static and my-react-test)
 - Added error messaging when audio can't be found on AudioDetail page
+- Pulling the audio transcriptions into the AudioDetail page
+
 
 Brainstorming name ideas:
 
@@ -80,5 +82,6 @@ The transcription is stored locally in the js object for continuous access
 
 
 My To Do:
+- Show transcriptions in audio detail page
 - Make sure files are assigned to users
 - Create projects

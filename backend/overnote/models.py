@@ -43,7 +43,7 @@ class CoWriter(models.Model):
 class Transcription(models.Model):
     audio = models.OneToOneField(Audio, on_delete=models.CASCADE, related_name='transcription')
     content = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    transcribed_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Transcription for {self.audio.title}"

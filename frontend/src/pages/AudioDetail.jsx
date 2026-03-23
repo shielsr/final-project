@@ -19,6 +19,7 @@ const AudioDetail = () => {
                 return res.json()
             })
             .then(data => {
+                console.log(data)
                 setAudio(data)
                 setTitle(data.title)
                 setDescription(data.description)
@@ -42,15 +43,21 @@ const AudioDetail = () => {
         <main className="content">
             <div className="container-sm w-50 my-4">
                 <h1 className="text-center my-4">{audio.title}</h1>
-
+                <audio controls src={audio.url} className='w-100 my-3' />
                 <div className='text-muted small mb-3'>
                     {audio.duration && <div>⏱ Duration: {formatDuration(audio.duration)}</div>}
                     {audio.file_size && <div>💾 File size: {formatFileSize(audio.file_size)}</div>}
                     {audio.created_at && <div>🗓 Recorded: {new Date(audio.created_at).toLocaleString()}</div>}
                 </div>
-                <div className='text'>Hello</div>
+                <div className='transcription'>
+                    <h3>Transcription:</h3>
+                    {audio.transcription
+                        ? <p>{audio.transcription.content}</p>
+                        : <p>No transcript available.</p>
+                    }
+                </div>
 
-                <audio controls src={audio.url} className='w-100 my-3' />
+
 
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
