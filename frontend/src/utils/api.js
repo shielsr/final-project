@@ -1,6 +1,14 @@
 import axios from 'axios'
 
-const api = axios.create({ baseURL: '/api/audiofiles/' })
+export const api = axios.create({ baseURL: '/api/audiofiles/' })
+
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('appAuthentication.access_token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${JSON.parse(token)}`
+  }
+  return config
+})
 
 export const getAudios = (setAudioList) => {
   api.get('/')

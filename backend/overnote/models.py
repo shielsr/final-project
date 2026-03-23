@@ -21,6 +21,7 @@ class Project(models.Model):
         return self.title
     
 class Audio(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='audios', default=1)
     title = models.CharField(default='my audio', max_length=120)
     description = models.TextField(blank=True)
     duration = models.IntegerField(null=True, blank=True)  # seconds as a number

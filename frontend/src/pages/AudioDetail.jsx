@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
-import { updateAudio } from '../utils/api'
+import { updateAudio, api } from '../utils/api'
 
 const AudioDetail = () => {
     const { id } = useParams()
@@ -13,12 +13,9 @@ const AudioDetail = () => {
     const [error, setError] = useState(false)
 
     useEffect(() => {
-        fetch(`/api/audiofiles/${id}/`)
+        api.get(`/${id}/`)
             .then(res => {
-                if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
-                return res.json()
-            })
-            .then(data => {
+                const data = res.data
                 console.log(data)
                 setAudio(data)
                 setTitle(data.title)

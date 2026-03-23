@@ -8,6 +8,7 @@ class TranscriptionSerializer(serializers.HyperlinkedModelSerializer):
 
 class AudioSerializer(serializers.HyperlinkedModelSerializer):
     transcription = TranscriptionSerializer(read_only=True)
+    creator = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Audio
-        fields = ('id', 'title', 'description', 'duration', 'url', 'file_size', 'created_at', 'transcription')
+        fields = ('id', 'creator', 'title', 'description', 'duration', 'url', 'file_size', 'created_at', 'transcription')

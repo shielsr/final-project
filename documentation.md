@@ -30,6 +30,9 @@ The following is a step-by-step account of how I did the project, which closely 
 - Removed redundant folders (frontend-static and my-react-test)
 - Added error messaging when audio can't be found on AudioDetail page
 - Pulling the audio transcriptions into the AudioDetail page
+- Added 'creator' data to the Audio model. 
+- Assigned the logged-in user to the new audio (involving JWTAuthentication, the axios interceptor, etc)
+- Rewrote the queryset request filter, so that only the files created by the current user are listed
 
 
 Brainstorming name ideas:
@@ -54,6 +57,19 @@ I built the original prototype full in React. This included the transcription AP
 
 # Authentication
 I followed the Unit 16 tutorial so it largely went smoothly. A challenge I encountered invovled my already having an /api/ url pattern from the earlier audio part. I had to use /api/auth/ instead and update the tutorial code accordingly. I obviously wouldn't have encountered this if I had done the Authentication before doing the audio recording component, so will know for future projects.
+
+# Audio files and their creator
+When trying to assign and filter audio by the logged-in user, I kept getting 500 errors. It turned out Django couldn't tell who was logged in. To fix it I did the following:
+
+1. Switched from DebugDisableAuthentication to JWTAuthentication in views.py
+2. Added an axios interceptor in utils/api.js that reads the JWT token from localStorage and attaches it to every API request as an Authorization header
+3. Switched the fetch() in AudioDetail.jsx to the axios api instance. The token gets sent there too
+4. Added perform_create to AudioView so the logged-in user/creator is automatically assigned to each new file
+5. Updated the queryset request in AudioView to filter for audio files created by the logged-in user (or files they're co-writer on)
+
+
+
+
 
 
 ## The flow of data when recording and transcribing

@@ -4,10 +4,12 @@ from django.shortcuts import render
 
 import assemblyai as aai
 from django.conf import settings
+from django.db import models
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .serializers import AudioSerializer
 from .models import Audio, Transcription
@@ -23,8 +25,16 @@ class DebugDisableAuthentication(TokenAuthentication):
 
 class AudioView(viewsets.ModelViewSet):
     serializer_class = AudioSerializer
-    queryset = Audio.objects.all()
-    authentication_classes = [DebugDisableAuthentication]
+    authentication_classes = [JWTAuthentication]
+    def get_queryset(self):
+        user = self.request.user
+        return Audio.objects.filter(
+            models.Q(creator=user) |
+            models.Q(project__cowriters=user)
+        ).distinct()
+        
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
     
 @api_view(['POST'])
 def transcribe_audio(request):
