@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import AudioSerializer
+from .serializers import AudioSerializer, ProjectSerializer
 from .models import Audio, Transcription, Project
 
 

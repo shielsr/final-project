@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Audio, Transcription
+from .models import Audio, Transcription, Project
 
 class TranscriptionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

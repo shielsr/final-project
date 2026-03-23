@@ -33,6 +33,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Added 'creator' data to the Audio model. 
 - Assigned the logged-in user to the new audio (involving JWTAuthentication, the axios interceptor, etc)
 - Rewrote the queryset request filter, so that only the files created by the current user are listed
+- Began setting up the Projects. Followed the same process as creating audio
+- Created pages for listing projects, creating new ones and a project detail page.
 
 
 Brainstorming name ideas:
@@ -68,8 +70,14 @@ When trying to assign and filter audio by the logged-in user, I kept getting 500
 5. Updated the queryset request in AudioView to filter for audio files created by the logged-in user (or files they're co-writer on)
 
 
-
-
+# Projects
+I followed the patterns of creating audio for creating projects. This roughly involved:
+1. Project API calls for all CRUD operations added to the utils/api.js. 
+2. In api.js, instead of having 2 interceptors for audio and projects, I used one (called 'attachToken') for both (The interceptor relates to linking a logged in user with an audio file or project).
+3. Added a new route to App.jsx
+4. Created pages/Projects.jsx to list all the projects
+5. Created pages/ProjectsNew.jsx for creating new projects
+6. Created 
 
 
 ## The flow of data when recording and transcribing
