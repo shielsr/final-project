@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { getAudios, createAudio, updateAudio, deleteAudio } from '../utils/api'
-import AudioModal from '../components/Modal'
 import Recorder from '../components/Recorder'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 import { Link } from 'react-router-dom'
@@ -40,7 +39,6 @@ const Record = () => {
   const navigate = useNavigate()
 
   const [audioList, setAudioList] = useState([])
-  const [showModal, setShowModal] = useState(false)
   const [activeItem, setActiveItem] = useState({ title: '', description: '' })
 
   useEffect(() => {
@@ -51,7 +49,6 @@ const Record = () => {
 
   const handleEdit = (item) => {
     setActiveItem(item)
-    setShowModal(true)
   }
 
   const handleSubmit = (item) => {
@@ -60,14 +57,12 @@ const Record = () => {
     } else {
       createAudio(item, setAudioList)
     }
-    setShowModal(false)
   }
 
   const handleDelete = (item) => {
     deleteAudio(item, setAudioList)
   }
 
-  const toggleModal = () => setShowModal(!showModal)
 
   if (!isLoggedIn) return null
 
@@ -95,13 +90,7 @@ const Record = () => {
           </div>
         </div>
 
-        {showModal && (
-          <AudioModal
-            activeItem={activeItem}
-            toggle={toggleModal}
-            onSave={handleSubmit}
-          />
-        )}
+        
       </div>
     </main>
   )

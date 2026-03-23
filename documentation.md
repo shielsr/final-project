@@ -28,6 +28,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Used the React Router to set up my first two pages, Home.jsx and Record.jsx
 - Created an AudioDetail.jsx page, to replace the Reactstrap modal.
 - Removed redundant folders (frontend-static and my-react-test)
+- Added error messaging when audio can't be found on AudioDetail page
 
 Brainstorming name ideas:
 
@@ -69,3 +70,15 @@ Upload to Cloudinary
 Save metadata to Django
 Transcribe via AssemblyAI through Django
 Save the transcription back to Django
+
+
+Rob Cleary's recommendation for including more JS:
+In main interface:
+Click recording
+Access js recording object with transcribe content
+The transcription is stored locally in the js object for continuous access
+
+
+My To Do:
+- Make sure files are assigned to users
+- Create projects
