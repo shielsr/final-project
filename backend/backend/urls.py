@@ -27,6 +27,7 @@ from overnote import views
 
 router = routers.DefaultRouter()
 router.register(r"audiofiles", views.AudioView, "audio")
+router.register(r"projects", views.ProjectView, "project")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

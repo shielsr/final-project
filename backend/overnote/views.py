@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .serializers import AudioSerializer
-from .models import Audio, Transcription
+from .models import Audio, Transcription, Project
 
 
 
@@ -21,7 +21,6 @@ class DebugDisableAuthentication(TokenAuthentication):
         if settings.DEBUG and settings.DISABLE_AUTHENTICATION_WHEN_DEBUG:
             return (None, key)
         return super().authenticate_credentials(key)
-
 
 class AudioView(viewsets.ModelViewSet):
     serializer_class = AudioSerializer
@@ -35,6 +34,22 @@ class AudioView(viewsets.ModelViewSet):
         
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+        
+        
+class ProjectView(viewsets.ModelViewSet):
+    serializer_class = ProjectSerializer
+    authentication_classes = [JWTAuthentication]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Project.objects.filter(
+            models.Q(owner=user) |
+            models.Q(cowriters=user)
+        ).distinct()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     
 @api_view(['POST'])
 def transcribe_audio(request):
