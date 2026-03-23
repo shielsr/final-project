@@ -7,6 +7,7 @@ import AudioDetail from './pages/AudioDetail'
 import { Login, Register } from './components/Authentication'
 import './App.css'
 import Projects from './pages/Projects'
+import ProjectNew from './pages/ProjectNew'
 
 
 
@@ -22,6 +23,7 @@ const AppContent = () => (
             <Route path="/audio/:id" element={<AudioDetail />} />
             <Route path="*" element={<h2>404 Not Found</h2>} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/new" element={<ProjectNew />} />
         </Routes>
     </div>
 )
