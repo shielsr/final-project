@@ -17,6 +17,7 @@ const Navigation = () => {
             <ul>
                 {isLoggedIn ? (
                     <>
+                        <li><NavLink to="/audio">My files</NavLink></li>
                         <li><NavLink to="/record">Record</NavLink></li>
                         <li><NavLink to="/projects">Projects</NavLink></li>
                         <li><button onClick={handleLogout}>Logout</button></li>

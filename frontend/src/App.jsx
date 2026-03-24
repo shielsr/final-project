@@ -4,6 +4,7 @@ import Navigation from './components/Navigation'
 import Home from './pages/Home'
 import Record from './pages/Record'
 import AudioDetail from './pages/AudioDetail'
+import AudioList from './pages/AudioList'
 import { Login, Register } from './components/Authentication'
 import './App.css'
 import Projects from './pages/Projects'
@@ -21,6 +22,7 @@ const AppContent = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/record" element={<Record />} />
+            <Route path="/audio" element={<AudioList />} />
             <Route path="/audio/:id" element={<AudioDetail />} />
             <Route path="*" element={<h2>404 Not Found</h2>} />
             <Route path="/projects" element={<Projects />} />
