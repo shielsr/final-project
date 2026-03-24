@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
-import { updateAudio, api } from '../utils/api'
+import { updateAudio, api, getProjects, getTranscription } from '../utils/api'
 import Transcriber from '../components/Transcriber'
+
 
 const AudioDetail = () => {
     const { id } = useParams()
@@ -12,6 +13,8 @@ const AudioDetail = () => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [error, setError] = useState(false)
+    const [projectList, setProjectList] = useState([])
+    const [transcription, setTranscription] = useState(null)
 
     useEffect(() => {
         api.get(`/${id}/`)
@@ -28,18 +31,18 @@ const AudioDetail = () => {
             })
     }, [id])
 
-    // When the transcription comes in, refresh the audio so we can hide the Transcribe button
-    const refreshAudio = () => {
-        api.get(`/${id}/`)
-            .then(res => setAudio(res.data))
-            .catch(err => console.error('Failed to refresh audio:', err))
-    }
+    useEffect(() => {
+        getProjects(setProjectList)
+    }, [])
 
+    useEffect(() => {
+        getTranscription(id, setTranscription)
+    }, [id])
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        updateAudio({ ...audio, title, description }, () => { })
+        updateAudio({ id: audio.id, title, description, project: audio.project }, () => { })
         navigate('/record')
     }
 
@@ -58,16 +61,14 @@ const AudioDetail = () => {
                 </div>
 
 
+
                 <div className='transcription'>
                     <h3>Transcription:</h3>
-                    {audio.transcription
-                        ? <p>{audio.transcription.content}</p>
-                        : <Transcriber audioUrl={audio.url} audioId={audio.id} onComplete={refreshAudio} />
+                    {transcription
+                        ? <p>{transcription.content}</p>
+                        : <Transcriber audioUrl={audio.url} audioId={audio.id} onComplete={() => getTranscription(id, setTranscription)} />
                     }
                 </div>
-                
-                {/* When transcription finishes, AudioDetail re-fetches the audio from Django, so as to not showing the Transcribe button after the transcription has arrived */}
-
 
 
                 <Form onSubmit={handleSubmit}>
@@ -89,6 +90,20 @@ const AudioDetail = () => {
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for='audio-project'>Project</Label>
+                        <Input
+                            type='select'
+                            id='audio-project'
+                            value={audio.project || ''}
+                            onChange={e => setAudio({ ...audio, project: e.target.value || null })}
+                        >
+                            <option value=''>No project</option>
+                            {projectList.map(project => (
+                                <option key={project.id} value={project.id}>{project.title}</option>
+                            ))}
+                        </Input>
                     </FormGroup>
                     <Button color='success' type='submit'>Save</Button>
                     <Button color='secondary' className='ms-2' onClick={() => navigate('/record')}>Back</Button>

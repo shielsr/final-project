@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import AudioSerializer, ProjectSerializer
+from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer
 from .models import Audio, Transcription, Project
 
 
@@ -35,6 +35,13 @@ class AudioView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
         
+    def update(self, request, *args, **kwargs):
+        print('Update data:', request.data)
+        serializer = self.get_serializer(self.get_object(), data=request.data, partial=False)
+        if not serializer.is_valid():
+            print('Validation errors:', serializer.errors)
+        return super().update(request, *args, **kwargs)
+        
         
 class ProjectView(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
@@ -50,6 +57,13 @@ class ProjectView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+class TranscriptionView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = TranscriptionSerializer
+    authentication_classes = [JWTAuthentication]
+
+    def get_queryset(self):
+        audio_id = self.request.query_params.get('audio')
+        return Transcription.objects.filter(audio__id=audio_id)
     
 @api_view(['POST'])
 def transcribe_audio(request):

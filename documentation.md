@@ -77,7 +77,11 @@ I followed the patterns of creating audio for creating projects. This roughly in
 3. Added a new route to App.jsx
 4. Created pages/Projects.jsx to list all the projects
 5. Created pages/ProjectsNew.jsx for creating new projects
-6. Created 
+6. Created project detail page
+
+# Transcription issues
+- The button! Finally got it to disappear after the transcription.
+- The endpoint.
 
 
 ## The flow of data when recording and transcribing
@@ -106,6 +110,17 @@ The transcription is stored locally in the js object for continuous access
 
 
 My To Do:
-- Show transcriptions in audio detail page
-- Make sure files are assigned to users
-- Create projects
+DONE - Show transcriptions in audio detail page
+DONE - Make sure files are assigned to users
+DONE - Create projects
+- Set up projectDetail pages, showing metadata and the assigned audio files
+- Add co-writers to a project
+- Split recording and file list into separate pages
+- I still have to figure out how to do categorization. I need a category model
+- Add testing for all models
+- Add testing for React components
+- Spruce up how it all looks (the UI, I mean)
+- Use the linter
+- Create postgres in Render
+- Deploy successfully
+- Bonus: Search transcripts

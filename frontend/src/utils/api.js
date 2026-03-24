@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 export const api = axios.create({ baseURL: '/api/audiofiles/' })
-const projectApi = axios.create({ baseURL: '/api/projects/' })  
+const projectApi = axios.create({ baseURL: '/api/projects/' })
+const transcriptionApi = axios.create({ baseURL: '/api/transcriptions/' })
 
 // Interceptor for adding the authorization token
 const attachToken = config => {
@@ -12,10 +13,21 @@ const attachToken = config => {
   return config
 }
 
-// For attaching user to a new audio file
+// For attaching user to an audio file
 api.interceptors.request.use(attachToken)
-// For attaching user to a new project
-projectApi.interceptors.request.use(attachToken)  
+// For attaching user to a project
+projectApi.interceptors.request.use(attachToken)
+// For attaching user to a transcription
+transcriptionApi.interceptors.request.use(attachToken)
+
+
+
+export const getTranscription = (audioId, setTranscription) => {
+  transcriptionApi.get(`/?audio=${audioId}`)
+    .then(res => setTranscription(res.data[0] || null))  // [0] because it returns a list
+    .catch(console.error)
+}
+
 
 
 // CRUD operations for the audio files
@@ -29,12 +41,16 @@ export const getAudios = (setAudioList) => {
 export const createAudio = async (item, setAudioList) => {
   const res = await api.post('/', item)
   await getAudios(setAudioList)
-  console.log('createAudio returning:', res.data) 
+  console.log('createAudio returning:', res.data)
   return res.data    // Return the saved audio object to get its ID
 }
 
 export const updateAudio = (item, setAudioList) => {
-  api.put(`/${item.id}/`, item)
+  api.put(`/${item.id}/`, {
+    title: item.title,
+    description: item.description,
+    project: item.project ? parseInt(item.project) : null
+  })
     .then(() => getAudios(setAudioList))
     .catch(console.error)
 }

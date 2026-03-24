@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Audio, Project, Transcription, CoWriter, SongwriterProfile
 
-# Register your models here.
+admin.site.register(Audio)
+admin.site.register(Project)
+admin.site.register(Transcription)
+admin.site.register(CoWriter)
+admin.site.register(SongwriterProfile)
