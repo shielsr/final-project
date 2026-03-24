@@ -96,6 +96,11 @@ This started as my prototype, seeing if the MediaRecorder API, Cloudinary and As
 # Adding a co-writer
 My approach to adding a co-writer here is not ideal. It exposes all usernames, which is fine for this college project, but in a real-world app it's not ideal. Ideally, I would allow co-writers to be added via email - they recieve the invite, accept and create an account. But, given time constraints, I will stick to the dropdown for now.
 
+It also opened up a lot of permissions issues that I hadn't planned for. A co-writer:
+- Shouldn't be able to delete a project they were invited to
+- Shouldn't be able to remove the owner from a project
+- Shouldn't be able to delete/remove an audio file
+
 ## The flow of data when recording and transcribing
 
 - User records audio -> blob created in React using MediaRecording API

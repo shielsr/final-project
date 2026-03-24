@@ -14,6 +14,7 @@ class AudioSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'creator', 'title', 'description', 'duration', 'url', 'file_size', 'created_at', 'project')
         
 class ProjectSerializer(serializers.ModelSerializer):
+    owner_username = serializers.CharField(source='owner.username', read_only=True)
     class Meta:
         model = Project
-        fields = ('id', 'title', 'description', 'created_at')
+        fields = ('id', 'title', 'description', 'created_at', 'owner_username')

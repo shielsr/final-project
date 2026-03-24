@@ -104,8 +104,9 @@ const ProjectDetail = () => {
                     }
                 </ul>
 
-                <h3>Cowriters</h3>
+                <h3>Writers</h3>
                 <ul className='list-group mb-3'>
+                    <li className='list-group-item d-flex justify-content-between align-items-center'>{project.owner_username} (project creator)</li>
                     {cowriters.length === 0
                         ? <li className='list-group-item'>No cowriters yet.</li>
                         : cowriters.map(cw => (
@@ -119,7 +120,6 @@ const ProjectDetail = () => {
                         ))
                     }
                 </ul>
-
                 <div className='d-flex gap-2'>
                     <Input
                         type='select'
