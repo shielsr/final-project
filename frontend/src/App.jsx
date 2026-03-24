@@ -8,6 +8,7 @@ import { Login, Register } from './components/Authentication'
 import './App.css'
 import Projects from './pages/Projects'
 import ProjectNew from './pages/ProjectNew'
+import ProjectDetail from './pages/ProjectDetail'
 
 
 
@@ -24,6 +25,7 @@ const AppContent = () => (
             <Route path="*" element={<h2>404 Not Found</h2>} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects/new" element={<ProjectNew />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
         </Routes>
     </div>
 )

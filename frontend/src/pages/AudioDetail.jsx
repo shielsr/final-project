@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
-import { updateAudio, api, getProjects, getTranscription } from '../utils/api'
+import { updateAudio, audioApi, getProjects, getTranscription } from '../utils/api'
 import Transcriber from '../components/Transcriber'
 
 
@@ -17,7 +17,7 @@ const AudioDetail = () => {
     const [transcription, setTranscription] = useState(null)
 
     useEffect(() => {
-        api.get(`/${id}/`)
+        audioApi.get(`/${id}/`)
             .then(res => {
                 const data = res.data
                 console.log(data)

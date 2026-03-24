@@ -24,24 +24,23 @@ class DebugDisableAuthentication(TokenAuthentication):
 
 class AudioView(viewsets.ModelViewSet):
     serializer_class = AudioSerializer
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication]        
+        
     def get_queryset(self):
         user = self.request.user
+        project_id = self.request.query_params.get('project')
+        
+        if project_id:
+            return Audio.objects.filter(project__id=project_id)
+        
         return Audio.objects.filter(
             models.Q(creator=user) |
             models.Q(project__cowriters=user)
         ).distinct()
-        
+            
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
-        
-    def update(self, request, *args, **kwargs):
-        print('Update data:', request.data)
-        serializer = self.get_serializer(self.get_object(), data=request.data, partial=False)
-        if not serializer.is_valid():
-            print('Validation errors:', serializer.errors)
-        return super().update(request, *args, **kwargs)
-        
+
         
 class ProjectView(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer

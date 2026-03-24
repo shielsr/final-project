@@ -35,7 +35,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Rewrote the queryset request filter, so that only the files created by the current user are listed
 - Began setting up the Projects. Followed the same process as creating audio
 - Created pages for listing projects, creating new ones and a project detail page.
-
+- Added a Projects select dropdown to the audio detail pages, where the user can assign an audio file to a project
 
 Brainstorming name ideas:
 
@@ -83,6 +83,9 @@ I followed the patterns of creating audio for creating projects. This roughly in
 - The button! Finally got it to disappear after the transcription.
 - The endpoint.
 
+# Tidy up apis
+My initial API for the audio files endpoint was just called `api`. When I eventually had projectApi and transcriptionApi, having one just called api looked confusing. So, I went back and renamed it to audioApi for clarity.
+
 
 ## The flow of data when recording and transcribing
 
@@ -113,13 +116,14 @@ My To Do:
 DONE - Show transcriptions in audio detail page
 DONE - Make sure files are assigned to users
 DONE - Create projects
-- Set up projectDetail pages, showing metadata and the assigned audio files
+DONE - Set up projectDetail pages, showing metadata and the assigned audio files
 - Add co-writers to a project
 - Split recording and file list into separate pages
 - I still have to figure out how to do categorization. I need a category model
 - Add testing for all models
 - Add testing for React components
 - Spruce up how it all looks (the UI, I mean)
+- Add page titles
 - Use the linter
 - Create postgres in Render
 - Deploy successfully
