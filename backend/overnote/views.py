@@ -40,6 +40,8 @@ class AudioView(viewsets.ModelViewSet):
             
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+    
+ 
 
         
 class ProjectView(viewsets.ModelViewSet):
@@ -79,7 +81,8 @@ class ProjectView(viewsets.ModelViewSet):
         user_id = request.data.get('user_id')
         CoWriter.objects.filter(project=project, user__id=user_id).delete()
         return Response({'status': 'cowriter removed'})
-
+    
+   
 class TranscriptionView(viewsets.ReadOnlyModelViewSet):
     serializer_class = TranscriptionSerializer
     authentication_classes = [JWTAuthentication]

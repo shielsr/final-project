@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
-import { updateAudio, audioApi, getProjects, getTranscription } from '../utils/api'
+import { updateAudio, audioApi, getProjects, getTranscription, deleteAudio } from '../utils/api'
 import Transcriber from '../components/Transcriber'
+import { useAuth } from '../AuthContext'
 
 
 const AudioDetail = () => {
+    const { username } = useAuth()
     const { id } = useParams()
     const navigate = useNavigate()
     const [audio, setAudio] = useState(null)
@@ -15,6 +17,7 @@ const AudioDetail = () => {
     const [error, setError] = useState(false)
     const [projectList, setProjectList] = useState([])
     const [transcription, setTranscription] = useState(null)
+    
 
     useEffect(() => {
         audioApi.get(`/${id}/`)
@@ -49,12 +52,15 @@ const AudioDetail = () => {
     if (error) return <p>Unable to load audio</p>
     if (!audio) return <p>Loading...</p>
 
+    const isCreator = audio.creator_username === username
+    
     return (
         <main className="content">
             <div className="container-sm w-50 my-4">
                 <h1 className="text-center my-4">{audio.title}</h1>
                 <audio controls src={audio.url} className='w-100 my-3' />
                 <div className='text-muted small mb-3'>
+                    {audio.creator_username && <div>👤 Created by: {audio.creator_username}</div>}
                     {audio.duration && <div>⏱ Duration: {formatDuration(audio.duration)}</div>}
                     {audio.file_size && <div>💾 File size: {formatFileSize(audio.file_size)}</div>}
                     {audio.created_at && <div>🗓 Recorded: {new Date(audio.created_at).toLocaleString()}</div>}

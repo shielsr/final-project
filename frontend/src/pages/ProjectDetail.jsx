@@ -8,7 +8,7 @@ import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 const ProjectDetail = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, username } = useAuth() // Updated with username for checking if it's the owner
     const [project, setProject] = useState(null)
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -59,6 +59,8 @@ const ProjectDetail = () => {
     if (error) return <p>Unable to load project</p>
     if (!project) return <p>Loading...</p>
 
+    const isOwner = project.owner_username === username
+    
     return (
         <main className="content">
             <div className="container-sm w-50 my-4">
@@ -86,6 +88,7 @@ const ProjectDetail = () => {
                     </FormGroup>
                     <Button color='success' type='submit'>Save</Button>
                     <Button color='secondary' className='ms-2' onClick={() => navigate('/projects')}>Back</Button>
+                    {isOwner && <Button color='danger' onClick={() => deleteProject(project)}>Delete Project</Button>}
                 </Form>
 
                 <h3>Audio Files</h3>

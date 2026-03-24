@@ -9,9 +9,10 @@ class TranscriptionSerializer(serializers.HyperlinkedModelSerializer):
 class AudioSerializer(serializers.HyperlinkedModelSerializer):
     creator = serializers.PrimaryKeyRelatedField(read_only=True)
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all(), allow_null=True, required=False)
+    creator_username = serializers.CharField(source='creator.username', read_only=True)
     class Meta:
         model = Audio
-        fields = ('id', 'creator', 'title', 'description', 'duration', 'url', 'file_size', 'created_at', 'project')
+        fields = ('id', 'creator', 'creator_username', 'title', 'description', 'duration', 'url', 'file_size', 'created_at', 'project')
         
 class ProjectSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)
