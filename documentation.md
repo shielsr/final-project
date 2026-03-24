@@ -134,6 +134,7 @@ DONE - Set up projectDetail pages, showing metadata and the assigned audio files
 DONE - Split recording and file list into separate pages
 DONE - Tidy up the Recorder component
 DONE - Add co-writers to a project
+DONE - Add permissions for cowriters
 - I still have to figure out how to do categorization. I need a category model
 - Add testing for all models
 - Add testing for React components

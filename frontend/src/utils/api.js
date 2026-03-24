@@ -3,6 +3,7 @@ import axios from 'axios'
 export const audioApi = axios.create({ baseURL: '/api/audiofiles/' })
 export const projectApi = axios.create({ baseURL: '/api/projects/' })
 const transcriptionApi = axios.create({ baseURL: '/api/transcriptions/' })
+const categoryApi = axios.create({ baseURL: '/api/categories/' })
 
 // Interceptor for adding the authorization token
 const attachToken = config => {
@@ -13,12 +14,14 @@ const attachToken = config => {
   return config
 }
 
-// For attaching user to an audio file
+// Attaching user to an audio file
 audioApi.interceptors.request.use(attachToken)
-// For attaching user to a project
+// Attaching user to a project
 projectApi.interceptors.request.use(attachToken)
-// For attaching user to a transcription
+// Attaching user to a transcription
 transcriptionApi.interceptors.request.use(attachToken)
+// Attaching the categories
+categoryApi.interceptors.request.use(attachToken)
 
 
 
@@ -50,6 +53,7 @@ export const updateAudio = (item, setAudioList) => {
     title: item.title,
     description: item.description,
     project: item.project ? parseInt(item.project) : null
+    categories: item.categories || []
   })
     .then(() => getAudios(setAudioList))
     .catch(console.error)
@@ -103,4 +107,13 @@ export const getUsers = () => {
       Authorization: `Bearer ${JSON.parse(localStorage.getItem('appAuthentication.access_token'))}`
     }
   })
+}
+
+
+// Categories
+
+export const getCategories = (setCategories) => {  // NEW
+  categoryApi.get('/')
+    .then(res => setCategories(res.data))
+    .catch(console.error)
 }

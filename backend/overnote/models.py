@@ -19,7 +19,18 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+class Category(models.Model):
+    GROUP_CHOICES = [
+        ('type', 'Type'),
+        ('section', 'Section'),
+    ]
+    name = models.CharField(max_length=50)
+    group = models.CharField(max_length=20, choices=GROUP_CHOICES)
+
+    def __str__(self):
+        return self.name
+        
 class Audio(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='audios', default=1)
     title = models.CharField(default='my audio', max_length=120)
@@ -29,6 +40,7 @@ class Audio(models.Model):
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True, related_name='audios')
     file_size = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
+    categories = models.ManyToManyField(Category, blank=True, related_name='audios')
     def __str__(self):
         return self.title
     
@@ -48,3 +60,4 @@ class Transcription(models.Model):
 
     def __str__(self):
         return f"Transcription for {self.audio.title}"
+    

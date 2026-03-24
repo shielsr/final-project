@@ -41,6 +41,7 @@ const AuthForm = ({ onSubmit, fields, submitButtonText }) => {
           value={formData[field.name]}
           onChange={handleChange}
           required={field.required}
+          autoComplete={field.autoComplete}
         />
       ))}
       <button type="submit">{submitButtonText}</button>
@@ -70,6 +71,7 @@ export const Login = () => {
       type: "password",
       placeholder: "Password",
       required: true,
+      autoComplete: "current-password",
     },
   ];
 
@@ -106,6 +108,7 @@ export const Register = () => {
       type: "password",
       placeholder: "Password",
       required: true,
+      autoComplete: "new-password",
     },
   ];
 

@@ -11,8 +11,8 @@ from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer
-from .models import Audio, Transcription, Project, CoWriter
+from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer, CategorySerializer
+from .models import Audio, Transcription, Project, CoWriter, Category
 
 
 
@@ -124,3 +124,9 @@ def transcribe_audio(request):
         return Response({'transcription': result.text})
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+    
+
+class CategoryView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = CategorySerializer
+    authentication_classes = [JWTAuthentication]
+    queryset = Category.objects.all()

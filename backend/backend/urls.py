@@ -29,6 +29,7 @@ router = routers.DefaultRouter()
 router.register(r"audiofiles", views.AudioView, "audio")
 router.register(r"projects", views.ProjectView, "project")
 router.register(r"transcriptions", views.TranscriptionView, "transcription")
+router.register(r"categories", views.CategoryView, "category")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

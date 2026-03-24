@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
-import { updateAudio, audioApi, getProjects, getTranscription, deleteAudio } from '../utils/api'
+import { updateAudio, audioApi, getProjects, getTranscription, deleteAudio, getCategories } from '../utils/api'
 import Transcriber from '../components/Transcriber'
 import { useAuth } from '../AuthContext'
 
@@ -17,7 +17,7 @@ const AudioDetail = () => {
     const [error, setError] = useState(false)
     const [projectList, setProjectList] = useState([])
     const [transcription, setTranscription] = useState(null)
-    
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
         audioApi.get(`/${id}/`)
@@ -42,6 +42,18 @@ const AudioDetail = () => {
         getTranscription(id, setTranscription)
     }, [id])
 
+    useEffect(() => {
+        getCategories(setCategories)
+    }, [])
+
+    // Toggle a category on or off
+    const toggleCategory = (categoryId) => {
+        const current = audio.categories || []
+        const updated = current.includes(categoryId)
+            ? current.filter(id => id !== categoryId)
+            : [...current, categoryId]
+        setAudio({ ...audio, categories: updated })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -53,7 +65,7 @@ const AudioDetail = () => {
     if (!audio) return <p>Loading...</p>
 
     const isCreator = audio.creator_username === username
-    
+
     return (
         <main className="content">
             <div className="container-sm w-50 my-4">
@@ -76,6 +88,27 @@ const AudioDetail = () => {
                     }
                 </div>
 
+
+                {['type', 'section'].map(group => (
+                    <div key={group} className='mb-3'>
+                        <h5 className='text-capitalize'>{group}</h5>
+                        <div className='d-flex flex-wrap gap-2'>
+                            {categories
+                                .filter(cat => cat.group === group)
+                                .map(cat => (
+                                    <span
+                                        key={cat.id}
+                                        onClick={() => toggleCategory(cat.id)}
+                                        style={{ cursor: 'pointer' }}
+                                        className={`badge ${(audio.categories || []).includes(cat.id) ? 'bg-primary' : 'bg-secondary'}`}
+                                    >
+                                        {cat.name}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </div>
+                ))}
 
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
@@ -113,6 +146,12 @@ const AudioDetail = () => {
                     </FormGroup>
                     <Button color='success' type='submit'>Save</Button>
                     <Button color='secondary' className='ms-2' onClick={() => navigate('/record')}>Back</Button>
+                    {isCreator &&
+                        <Button color='danger' className='ms-2' onClick={() => {
+                            deleteAudio(audio, () => { })
+                            navigate('/audio')
+                        }}>Delete</Button>
+                    }
                 </Form>
             </div>
         </main>
