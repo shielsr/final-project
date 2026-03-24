@@ -35,7 +35,6 @@ export default function Recorder({ }) {
     const startRecording = async () => {
         setIsRecording(true)
         setSeconds(0)
-        
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
             mediaStream.current = stream
@@ -45,27 +44,38 @@ export default function Recorder({ }) {
                     chunks.current.push(e.data)
                 }
             }
-            const timer = setInterval(() => {
+            timerRef.current = setInterval(() => {
                 setSeconds(prev => prev + 1)
             }, 1000)
 
-            mediaRecorder.current.onstop = () => {
-                const recordedBlob = new Blob(chunks.current, { type: 'audio/mp3' })
-                // console.log('file size:', recordedBlob.size)
-                const url = URL.createObjectURL(recordedBlob)
-                setRecordedURL(url)
-                setRecordedBlob(recordedBlob)
-                setFileSize(recordedBlob.size)
+
+            mediaRecorder.current.onstop = async () => {
+                clearInterval(timerRef.current)
+                const blob = new Blob(chunks.current, { type: 'audio/mp3' })
                 chunks.current = []
-                clearTimeout(timer)
+
+                const defaultTitle = `Recording ${new Date().toLocaleString()}`
+                setUploading(true)
+                try {
+                    const data = await uploadToCloudinary(blob, defaultTitle)
+                    const audio = await createAudio({
+                        title: defaultTitle,
+                        description: '',
+                        url: data.secure_url,
+                        duration: Math.round(data.duration ?? seconds),
+                        file_size: blob.size
+                    }, () => {})
+                    navigate(`/audio/${audio.id}`)
+                } catch (err) {
+                    console.error('Failed to save recording:', err)
+                    setUploading(false)
+                }
             }
 
             mediaRecorder.current.start()
-
         } catch (error) {
-            console.log(error);
+            console.error(error)
         }
-
     }
 
     const stopRecording = () => {
@@ -76,76 +86,23 @@ export default function Recorder({ }) {
         }
     }
 
-    // Upload to Cloudinary then save to Django
-    const handleSave = async () => {
-        if (!recordedBlob || !title) return
-        setUploading(true)
-        try {
-            const data = await uploadToCloudinary(recordedBlob, title)
-            // console.log('fileSize at save time:', fileSize)
-            const audio = await createAudio({
-                title,
-                description: '',
-                url: data.secure_url,       // URL returned by Cloudinary
-                duration: Math.round(data.duration ?? seconds), // prefer Cloudinary's duration, fall back to our timer
-                file_size: fileSize // This is in bytes
-            }, setAudioList)
-            // console.log('audio received in handleSave:', audio)  
-            setSavedAudio(audio) // The object with all its fields
-            setRecordedURL('')
-            setRecordedBlob(null)
-            setTitle('')
-            setSeconds(0)
-            setFileSize(null)
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setUploading(false)
-        }
-    }
-
     const formatTime = (totalSeconds) => {
         const hours = Math.floor(totalSeconds / 3600)
         const minutes = Math.floor((totalSeconds % 3600) / 60)
         const secs = totalSeconds % 60
-
         return `${String(hours).padStart(2, "0")} : ${String(minutes).padStart(2, "0")} : ${String(secs).padStart(2, "0")}`
     }
 
     return (
         <div>
+            <h2>{formatTime(seconds)}</h2>
 
-            <h2>
-                {formatTime(seconds)}
-            </h2>
-
-            {isRecording ?
-                <button onClick={stopRecording}>
-                    <FaCircleStop />
-                </button> :
-
-
-                <button onClick={startRecording}>
-                    <FaMicrophone />
-                </button>
+            {isRecording
+                ? <button onClick={stopRecording}><FaCircleStop /></button>
+                : <button onClick={startRecording} disabled={uploading}><FaMicrophone /></button>
             }
 
-            {recordedURL && <audio controls src={recordedURL} />}
-
-            {recordedBlob && (
-                <div>
-                    <input
-                        type='text'
-                        placeholder='Recording title'
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                    />
-                    <button onClick={handleSave} disabled={!title || uploading}>
-                        {uploading ? 'Saving...' : 'Save Recording'}
-                    </button>
-                </div>
-            )}
-            {savedAudio && <Transcriber audioUrl={savedAudio.url} audioId={savedAudio.id} />}
+            {uploading && <p>Saving...</p>}
         </div>
     )
 }
