@@ -53,7 +53,7 @@ export const updateAudio = (item, setAudioList) => {
     title: item.title,
     description: item.description,
     project: item.project ? parseInt(item.project) : null
-    categories: item.categories || []
+    // categories: item.categories || []
   })
     .then(() => getAudios(setAudioList))
     .catch(console.error)
