@@ -1,18 +1,18 @@
 from django.shortcuts import render
 
 # Create your views here.
-
+from django.contrib.auth.models import User
 import assemblyai as aai
 from django.conf import settings
 from django.db import models
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer
-from .models import Audio, Transcription, Project
+from .models import Audio, Transcription, Project, CoWriter
 
 
 
@@ -55,6 +55,30 @@ class ProjectView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+        
+    @action(detail=True, methods=['get'])
+    def cowriters(self, request, pk=None):
+        project = self.get_object()
+        cowriters = CoWriter.objects.filter(project=project).select_related('user')
+        return Response([{'id': cw.user.id, 'username': cw.user.username} for cw in cowriters])
+        
+    @action(detail=True, methods=['post'])
+    def add_cowriter(self, request, pk=None):
+        project = self.get_object()
+        user_id = request.data.get('user_id')
+        try:
+            user = User.objects.get(id=user_id)
+            CoWriter.objects.get_or_create(project=project, user=user)
+            return Response({'status': 'cowriter added'})
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=400)
+
+    @action(detail=True, methods=['post'])
+    def remove_cowriter(self, request, pk=None):
+        project = self.get_object()
+        user_id = request.data.get('user_id')
+        CoWriter.objects.filter(project=project, user__id=user_id).delete()
+        return Response({'status': 'cowriter removed'})
 
 class TranscriptionView(viewsets.ReadOnlyModelViewSet):
     serializer_class = TranscriptionSerializer

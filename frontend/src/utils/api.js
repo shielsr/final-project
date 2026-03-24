@@ -85,3 +85,22 @@ export const deleteProject = (item, setProjectList) => {
     .then(() => getProjects(setProjectList))
     .catch(console.error)
 }
+
+
+// Adding and removing cowriters
+
+export const addCowriter = (projectId, userId) => {
+  return projectApi.post(`/${projectId}/add_cowriter/`, { user_id: userId })
+}
+
+export const removeCowriter = (projectId, userId) => {
+  return projectApi.post(`/${projectId}/remove_cowriter/`, { user_id: userId })
+}
+
+export const getUsers = () => {
+  return axios.get('/api/auth/users/', {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem('appAuthentication.access_token'))}`
+    }
+  })
+}

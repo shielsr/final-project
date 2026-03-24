@@ -38,6 +38,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - Added a Projects select dropdown to the audio detail pages, where the user can assign an audio file to a project
 - The Record page was very cluttered and the code was messy so I split it in two: AudioList.jsx and Record.jsx. I did this in a branch for safety.
 - Tidied up the Recorder component, as it was initially my prototype and had some redundant code.
+- Cowriters can be added to projects
 
 
 Brainstorming name ideas:
@@ -90,8 +91,10 @@ I followed the patterns of creating audio for creating projects. This roughly in
 My initial API for the audio files endpoint was just called `api`. When I eventually had projectApi and transcriptionApi, having one just called api looked confusing. So, I went back and renamed it to audioApi for clarity.
 
 # Recorder component
-This started as my prototype, seeing if the MediaRecorder API and Assembly AI would work together. As the project developed, a lot of the code in the Recorder became redundant. It made more sense to keep the Recorder component purely for recording, and to redirect the user to an AudioDetail page to enter metadata. This kept the component clean and tidy.
+This started as my prototype, seeing if the MediaRecorder API, Cloudinary and Assembly AI would work together. As the project developed, a lot of the code in the Recorder became redundant. It made more sense to keep the Recorder component purely for recording, and to redirect the user to an AudioDetail page to enter metadata. This kept the component clean and tidy.
 
+# Adding a co-writer
+My approach to adding a co-writer here is not ideal. It exposes all usernames, which is fine for this college project, but in a real-world app it's not ideal. Ideally, I would allow co-writers to be added via email - they recieve the invite, accept and create an account. But, given time constraints, I will stick to the dropdown for now.
 
 ## The flow of data when recording and transcribing
 
@@ -124,7 +127,8 @@ DONE - Make sure files are assigned to users
 DONE - Create projects
 DONE - Set up projectDetail pages, showing metadata and the assigned audio files
 DONE - Split recording and file list into separate pages
-- Add co-writers to a project
+DONE - Tidy up the Recorder component
+DONE - Add co-writers to a project
 - I still have to figure out how to do categorization. I need a category model
 - Add testing for all models
 - Add testing for React components

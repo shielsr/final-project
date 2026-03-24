@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
-import { audioApi, projectApi, updateProject } from '../utils/api'
+import { audioApi, projectApi, updateProject, getUsers, addCowriter, removeCowriter } from '../utils/api'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 
@@ -14,6 +14,11 @@ const ProjectDetail = () => {
     const [description, setDescription] = useState('')
     const [audios, setAudios] = useState([])
     const [error, setError] = useState(false)
+
+    // For adding and removing cowriters
+    const [cowriters, setCowriters] = useState([])
+    const [users, setUsers] = useState([])
+    const [selectedUser, setSelectedUser] = useState('')
 
     useEffect(() => {
         if (!isLoggedIn) navigate('/login')
@@ -35,9 +40,20 @@ const ProjectDetail = () => {
             .catch(console.error)
     }, [id])
 
+    // This gets the cowriters
+    useEffect(() => {
+        getUsers().then(res => setUsers(res.data))
+    }, [])
+
+    useEffect(() => {
+        projectApi.get(`/${id}/cowriters/`)
+            .then(res => setCowriters(res.data))
+            .catch(console.error)
+    }, [id])
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        updateProject({ id: project.id, title, description }, () => {})
+        updateProject({ id: project.id, title, description }, () => { })
     }
 
     if (error) return <p>Unable to load project</p>
@@ -89,7 +105,44 @@ const ProjectDetail = () => {
                 </ul>
 
                 <h3>Cowriters</h3>
-                <p className='text-muted'>Coming soon.</p>
+                <ul className='list-group mb-3'>
+                    {cowriters.length === 0
+                        ? <li className='list-group-item'>No cowriters yet.</li>
+                        : cowriters.map(cw => (
+                            <li key={cw.id} className='list-group-item d-flex justify-content-between align-items-center'>
+                                <span>{cw.username}</span>
+                                <Button color='danger' size='sm' onClick={() =>
+                                    removeCowriter(id, cw.id)
+                                        .then(() => setCowriters(cowriters.filter(c => c.id !== cw.id)))
+                                }>Remove</Button>
+                            </li>
+                        ))
+                    }
+                </ul>
+
+                <div className='d-flex gap-2'>
+                    <Input
+                        type='select'
+                        value={selectedUser}
+                        onChange={e => setSelectedUser(e.target.value)}
+                    >
+                        <option value=''>Select a user...</option>
+                        {users
+                            .filter(u => !cowriters.find(cw => cw.id === u.id))
+                            .map(u => (
+                                <option key={u.id} value={u.id}>{u.username}</option>
+                            ))
+                        }
+                    </Input>
+                    <Button color='success' disabled={!selectedUser} onClick={() =>
+                        addCowriter(id, selectedUser)
+                            .then(() => {
+                                const user = users.find(u => u.id === parseInt(selectedUser))
+                                setCowriters([...cowriters, user])
+                                setSelectedUser('')
+                            })
+                    }>Add</Button>
+                </div>
             </div>
         </main>
     )
