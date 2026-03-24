@@ -36,7 +36,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - Began setting up the Projects. Followed the same process as creating audio
 - Created pages for listing projects, creating new ones and a project detail page.
 - Added a Projects select dropdown to the audio detail pages, where the user can assign an audio file to a project
-- The Record page was quite cluttered, so I split the list of audio file off into its own page, AudioList.jsx
+- The Record page was quite cluttered, so I split the list of audio file off into its own page, AudioList.jsx I did this in a separate branch for safety.
+
 
 Brainstorming name ideas:
 
