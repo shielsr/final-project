@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FaCircleStop, FaMicrophone } from 'react-icons/fa6'
-import Transcriber from './Transcriber'
 import { createAudio } from '../utils/api'
 
 
@@ -21,27 +21,22 @@ const uploadToCloudinary = async (blob, title) => {
 
 
 
-export default function Recorder({ setAudioList }) {
-
-    const [isRecording, setIsRecording] = useState(false)
-    const [recordedURL, setRecordedURL] = useState('')
-    const [recordedBlob, setRecordedBlob] = useState(null)
-    const [seconds, setSeconds] = useState(0)
-    const [title, setTitle] = useState('')
+export default function Recorder({ }) {
+    const navigate = useNavigate() // For the redirect at the end
+    const [isRecording, setIsRecording] = useState(false)  // Checks if the user is recording
+    const [seconds, setSeconds] = useState(0)               // Timer
     const [uploading, setUploading] = useState(false)
-    const [fileSize, setFileSize] = useState(null)
-    const [savedAudio, setSavedAudio] = useState(null)
 
     const mediaStream = useRef(null)
     const mediaRecorder = useRef(null)
     const chunks = useRef([])
+    const timerRef = useRef(null)
 
     const startRecording = async () => {
         setIsRecording(true)
-        setRecordedURL('')
-        setRecordedBlob(null)
+        setSeconds(0)
+        
         try {
-            setSeconds(0)
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
             mediaStream.current = stream
             mediaRecorder.current = new MediaRecorder(stream)
@@ -95,7 +90,7 @@ export default function Recorder({ setAudioList }) {
                 duration: Math.round(data.duration ?? seconds), // prefer Cloudinary's duration, fall back to our timer
                 file_size: fileSize // This is in bytes
             }, setAudioList)
-            // console.log('audio received in handleSave:', audio)  // ← what does this show?
+            // console.log('audio received in handleSave:', audio)  
             setSavedAudio(audio) // The object with all its fields
             setRecordedURL('')
             setRecordedBlob(null)
