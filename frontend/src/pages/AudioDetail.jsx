@@ -55,10 +55,10 @@ const AudioDetail = () => {
         setAudio({ ...audio, categories: updated })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        updateAudio({ id: audio.id, title, description, project: audio.project }, () => { })
-        navigate('/record')
+        await updateAudio({ id: audio.id, title, description, project: audio.project, categories: audio.categories || [] }, () => { })
+        navigate('/audio')
     }
 
     if (error) return <p>Unable to load audio</p>
@@ -89,70 +89,77 @@ const AudioDetail = () => {
                 </div>
 
 
-                {['type', 'section'].map(group => (
-                    <div key={group} className='mb-3'>
-                        <h5 className='text-capitalize'>{group}</h5>
-                        <div className='d-flex flex-wrap gap-2'>
-                            {categories
-                                .filter(cat => cat.group === group)
-                                .map(cat => (
-                                    <span
-                                        key={cat.id}
-                                        onClick={() => toggleCategory(cat.id)}
-                                        style={{ cursor: 'pointer' }}
-                                        className={`badge ${(audio.categories || []).includes(cat.id) ? 'bg-primary' : 'bg-secondary'}`}
-                                    >
-                                        {cat.name}
-                                    </span>
-                                ))
+                <div className='card text-start'>
+                    <div className='card-body'>
+                        <h3 className='card-title'>Edit details</h3>
+                        <Form onSubmit={handleSubmit}>
+                            <FormGroup>
+                                <Label for='audio-title'>Title</Label>
+                                <Input
+                                    type='text'
+                                    id='audio-title'
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
+                                    required
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for='audio-description'>Description</Label>
+                                <Input
+                                    type='text'
+                                    id='audio-description'
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <h4>Category</h4>
+                                {['type', 'section'].map(group => (
+                                    <div key={group} className='mb-3'>
+                                        <h5 className='text-capitalize'>{group}</h5>
+                                        <div className='d-flex flex-wrap gap-2'>
+                                            {categories
+                                                .filter(cat => cat.group === group)
+                                                .map(cat => (
+                                                    <span
+                                                        key={cat.id}
+                                                        onClick={() => toggleCategory(cat.id)}
+                                                        style={{ cursor: 'pointer' }}
+                                                        className={`badge ${(audio.categories || []).includes(cat.id) ? 'bg-primary' : 'bg-secondary'}`}
+                                                    >
+                                                        {cat.name}
+                                                    </span>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for='audio-project'>Project</Label>
+                                <Input
+                                    type='select'
+                                    id='audio-project'
+                                    value={audio.project || ''}
+                                    onChange={e => setAudio({ ...audio, project: e.target.value || null })}
+                                >
+                                    <option value=''>No project</option>
+                                    {projectList.map(project => (
+                                        <option key={project.id} value={project.id}>{project.title}</option>
+                                    ))}
+                                </Input>
+                            </FormGroup>
+                            <Button color='success' type='submit'>Save</Button>
+                            <Button color='secondary' className='ms-2' onClick={() => navigate('/record')}>Back</Button>
+                            {isCreator &&
+                                <Button color='danger' className='ms-2' onClick={() => {
+                                    deleteAudio(audio, () => { })
+                                    navigate('/audio')
+                                }}>Delete</Button>
                             }
-                        </div>
+                        </Form>
                     </div>
-                ))}
-
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label for='audio-title'>Title</Label>
-                        <Input
-                            type='text'
-                            id='audio-title'
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                            required
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='audio-description'>Description</Label>
-                        <Input
-                            type='text'
-                            id='audio-description'
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='audio-project'>Project</Label>
-                        <Input
-                            type='select'
-                            id='audio-project'
-                            value={audio.project || ''}
-                            onChange={e => setAudio({ ...audio, project: e.target.value || null })}
-                        >
-                            <option value=''>No project</option>
-                            {projectList.map(project => (
-                                <option key={project.id} value={project.id}>{project.title}</option>
-                            ))}
-                        </Input>
-                    </FormGroup>
-                    <Button color='success' type='submit'>Save</Button>
-                    <Button color='secondary' className='ms-2' onClick={() => navigate('/record')}>Back</Button>
-                    {isCreator &&
-                        <Button color='danger' className='ms-2' onClick={() => {
-                            deleteAudio(audio, () => { })
-                            navigate('/audio')
-                        }}>Delete</Button>
-                    }
-                </Form>
+                </div>
             </div>
         </main>
     )

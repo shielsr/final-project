@@ -39,6 +39,8 @@ The following is a step-by-step account of how I did the project, which closely 
 - The Record page was very cluttered and the code was messy so I split it in two: AudioList.jsx and Record.jsx. I did this in a branch for safety.
 - Tidied up the Recorder component, as it was initially my prototype and had some redundant code.
 - Cowriters can be added to projects
+- Added a category table
+- Add category tags on Audio detail page
 
 
 Brainstorming name ideas:
@@ -135,7 +137,7 @@ DONE - Split recording and file list into separate pages
 DONE - Tidy up the Recorder component
 DONE - Add co-writers to a project
 DONE - Add permissions for cowriters
-- I still have to figure out how to do categorization. I need a category model
+DONE - I still have to figure out how to do categorization. I need a category model
 - Add testing for all models
 - Add testing for React components
 - Spruce up how it all looks (the UI, I mean)

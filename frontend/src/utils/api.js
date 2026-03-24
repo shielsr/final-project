@@ -49,11 +49,11 @@ export const createAudio = async (item, setAudioList) => {
 }
 
 export const updateAudio = (item, setAudioList) => {
-  audioApi.put(`/${item.id}/`, {
+  return audioApi.put(`/${item.id}/`, {
     title: item.title,
     description: item.description,
-    project: item.project ? parseInt(item.project) : null
-    // categories: item.categories || []
+    project: item.project ? parseInt(item.project) : null,
+    categories: item.categories || []
   })
     .then(() => getAudios(setAudioList))
     .catch(console.error)

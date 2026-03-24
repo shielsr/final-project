@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 
 from dotenv import load_dotenv
+from datetime import timedelta
+
 
 load_dotenv()
 
@@ -162,4 +164,6 @@ REST_FRAMEWORK = {
 # JWT settings
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),  # 👈 24 hours instead of default 5 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }

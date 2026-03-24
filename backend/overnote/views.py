@@ -41,7 +41,9 @@ class AudioView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
     
- 
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+    
 
         
 class ProjectView(viewsets.ModelViewSet):
