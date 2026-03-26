@@ -145,7 +145,7 @@ CORS_ORIGIN_WHITELIST = [
 STATIC_URL = "/assets/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 # Auth
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('RENDER_EXTERNAL_HOSTNAME', '')]
