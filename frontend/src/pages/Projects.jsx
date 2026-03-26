@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { getProjects, deleteProject } from '../utils/api'
-import { Button } from 'reactstrap'
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardAction, CardDescription } from '@/components/ui/card'
+
+
 
 const Projects = () => {
     const { isLoggedIn } = useAuth()
@@ -20,25 +23,41 @@ const Projects = () => {
     if (!isLoggedIn) return null
 
     return (
-        <main className="content">
-            <div className="container-sm w-50 my-4">
-                <div className="d-flex justify-content-between align-items-center my-4">
-                    <h1>Projects</h1>
-                    <Button color='success' onClick={() => navigate('/projects/new')}>New Project</Button>
+            <>
+                <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-3xl font-bold">Projects</h1>
+                    <Button onClick={() => navigate('/projects/new')}>New Project</Button>
                 </div>
 
-                <ul className='list-group'>
-                    {projectList.map(project => (
-                        <li key={project.id} className='list-group-item d-flex justify-content-between align-items-center'>
-                            <Link to={`/projects/${project.id}`}>{project.title}</Link>
-                            <span>
-                                <Button color='danger' size='sm' onClick={() => deleteProject(project, setProjectList)}>Delete</Button>
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </main>
+                <Card>
+                    <CardContent className="p-0">
+                        {projectList.length === 0
+                            ? <p className="text-muted-foreground p-6">No projects yet.</p>
+                            : projectList.map(project => (
+                                <div
+                                    key={project.id}
+                                    className="flex justify-between items-center px-6 py-4 border-b last:border-0"
+                                >
+                                    <Link
+                                        to={`/projects/${project.id}`}
+                                        className="font-medium hover:underline"
+                                    >
+                                        {project.title}
+                                    </Link>
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={() => deleteProject(project, setProjectList)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
+                            ))
+                        }
+                    </CardContent>
+                </Card>
+            </>
+        
     )
 }
 

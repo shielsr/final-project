@@ -110,13 +110,11 @@ In a case of terrible timing, Render switched off their community forums on Marc
 
 I went around in circles and found a series on YouTube: https://www.youtube.com/watch?v=t8tkHO4Hi4U&list=PLmEKHA8iFrmDpiqMsEXowUz7-G2RCOyfr&index=3
 
-I spent hours hitting a wall with "vite: Permission denied". The problem was addressed in the Render forums (based on Google searches) but the pages were gone. I found this reference to the dead forum link: https://www.reddit.com/r/vercel/comments/1i9rur8/permission_denied_while_deploying_vite_app_on/
+I spent hours hitting various walls. One was with "vite: Permission denied". The problem was addressed in the Render forums (based on Google searches) but the pages were gone. I found this reference to the dead forum link: https://www.reddit.com/r/vercel/comments/1i9rur8/permission_denied_while_deploying_vite_app_on/
 
-I eventually figured out how to get rid of node_modules from github. 
+I hit issues around file case. At some point, I must have changed my lowercase component filenames to title case (from recorder to Recorder). GIthub didn't update though. Had to force a rename of the files in github.
 
-But then I hit issues around file case. At some point, I must have changed my lowercase component filenames to title case (from recorder to Recorder). GIthub didn't update though. 
-
-
+Eventually I gave up and went back to the course videos. It turns out Yoni explained the approach of static files in Unit 15 (from around 48 minutes on), which I watched at the time but forgot about. Once I followed that, it was relatively plain sailing.
 
 
 ## The flow of data when recording and transcribing
@@ -159,7 +157,7 @@ DONE - I still have to figure out how to do categorization. I need a category mo
 - Spruce up how it all looks (the UI, I mean)
 - Add page titles
 - Use the linter
-- Create postgres in Render
-- Deploy successfully
+DONE - Create postgres in Render
+DONE - Deploy successfully
 - Bonus: Search transcripts
 - Bonus: Share projects with the public

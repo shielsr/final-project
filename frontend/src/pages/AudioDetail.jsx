@@ -6,6 +6,11 @@ import { updateAudio, audioApi, getProjects, getTranscription, deleteAudio, getC
 import Transcriber from '../components/Transcriber'
 import { useAuth } from '../AuthContext'
 
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardAction, CardDescription } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+
 
 const AudioDetail = () => {
     const { username } = useAuth()

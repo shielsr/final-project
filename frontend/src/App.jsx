@@ -12,23 +12,25 @@ import ProjectNew from './pages/ProjectNew'
 import ProjectDetail from './pages/ProjectDetail'
 
 
-
-
 const AppContent = () => (
     <div className="App">
         <Navigation />
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/record" element={<Record />} />
-            <Route path="/audio" element={<AudioList />} />
-            <Route path="/audio/:id" element={<AudioDetail />} />
-            <Route path="*" element={<h2>404 Not Found</h2>} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/projects/new" element={<ProjectNew />} />
-            <Route path="/projects/:id" element={<ProjectDetail />} />
-        </Routes>
+        <main className="p-8">
+            <div className="max-w-2xl mx-auto">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/record" element={<Record />} />
+                    <Route path="/audio" element={<AudioList />} />
+                    <Route path="/audio/:id" element={<AudioDetail />} />
+                    <Route path="*" element={<h2>404 Not Found</h2>} />
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/projects/new" element={<ProjectNew />} />
+                    <Route path="/projects/:id" element={<ProjectDetail />} />
+                </Routes>
+            </div>
+        </main>
     </div>
 )
 

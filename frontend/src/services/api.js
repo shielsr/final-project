@@ -3,7 +3,7 @@ import axios from "axios";
 // TODO: change to env variable to prepare for deployment to production
 // const API_URL = import.meta.env.VITE_API_URL;
 
-const API_URL = import.meta.env.VITE_API_URL || "/api";
+const API_URL = "/api";
 
 const api = axios.create({
   baseURL: API_URL,
