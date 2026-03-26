@@ -15,6 +15,7 @@ import os
 
 from dotenv import load_dotenv
 from datetime import timedelta
+import dj_database_url
 
 
 load_dotenv()
@@ -31,10 +32,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t-*xfp9)bh0uilz74umz+%5#i!v@uc3e5myq7e9hn4g_pw(s87'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'TRUE'
 
 DISABLE_AUTHENTICATION_WHEN_DEBUG = False
 
@@ -57,9 +58,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,12 +92,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
+if DEBUG: # Allow a fallback to sqlite
+    DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+else: # Require a DATABASE_URL env var (from the Render.com database instance).
+    DATABASE_URL = os.environ["DATABASE_URL"]  # Will raise KeyError if missing
+
+DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
 
 
 # Password validation
@@ -135,6 +137,9 @@ USE_TZ = True
 
 # STATIC_URL = 'static/'   # Old line
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
 ]
@@ -145,7 +150,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Auth
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('RENDER_EXTERNAL_HOSTNAME', '')]
 
 # This is the URL where the frontend will be running
 # We only allow requests from this URL

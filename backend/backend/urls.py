@@ -38,3 +38,6 @@ urlpatterns = [
     path("api/transcribe/", views.transcribe_audio), # For the Django-based Assembly AI transcriptions
     re_path(r"^$", serve, kwargs={"path": "index.html", "document_root": settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
