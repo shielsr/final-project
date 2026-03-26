@@ -19,3 +19,21 @@ class Command(BaseCommand):
         if not User.objects.filter(username=username).exists():
             User.objects.create_superuser(username=username, email=email, password=password)
             self.stdout.write(self.style.SUCCESS(f"The superuser '{username}' was created successfully"))
+            
+        from overnote.models import Category
+        categories = [
+            ('Melody', 'type'),
+            ('Lyric', 'type'),
+            ('Vocal', 'type'),
+            ('Harmony', 'type'),
+            ('Instrumental', 'type'),
+            ('Beat/Rhythm', 'type'),
+            ('Intro', 'section'),
+            ('Verse', 'section'),
+            ('Pre-chorus', 'section'),
+            ('Chorus', 'section'),
+            ('Bridge', 'section'),
+            ('Outro', 'section'),
+        ]
+        for name, group in categories:
+            Category.objects.get_or_create(name=name, group=group)

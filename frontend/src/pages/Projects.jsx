@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { getProjects, deleteProject } from '../utils/api'
 import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardAction, CardDescription } from '@/components/ui/card'
-
-
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { ChevronRight } from 'lucide-react'
 
 const Projects = () => {
     const { isLoggedIn } = useAuth()
@@ -23,41 +22,30 @@ const Projects = () => {
     if (!isLoggedIn) return null
 
     return (
-            <>
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold">Projects</h1>
-                    <Button onClick={() => navigate('/projects/new')}>New Project</Button>
-                </div>
+        <>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold">Projects</h1>
+                <Button onClick={() => navigate('/projects/new')}>New Project</Button>
+            </div>
 
-                <Card>
-                    <CardContent className="p-0">
-                        {projectList.length === 0
-                            ? <p className="text-muted-foreground p-6">No projects yet.</p>
-                            : projectList.map(project => (
-                                <div
-                                    key={project.id}
-                                    className="flex justify-between items-center px-6 py-4 border-b last:border-0"
-                                >
-                                    <Link
-                                        to={`/projects/${project.id}`}
-                                        className="font-medium hover:underline"
-                                    >
-                                        {project.title}
-                                    </Link>
-                                    <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => deleteProject(project, setProjectList)}
-                                    >
-                                        Delete
-                                    </Button>
-                                </div>
-                            ))
-                        }
-                    </CardContent>
-                </Card>
-            </>
-        
+            {projectList.length === 0
+                ? <p className="text-muted-foreground">No projects yet.</p>
+                : <div className="grid gap-4">
+                    {projectList.map(project => (
+                        <Card
+                            key={project.id}
+                            className="hover:shadow-md transition-shadow cursor-pointer"
+                            onClick={() => navigate(`/projects/${project.id}`)}
+                        >
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle>{project.title}</CardTitle>
+                                <ChevronRight className="h-10 w-10 text-muted-foreground shrink-0" />
+                            </CardHeader>
+                        </Card>
+                    ))}
+                </div>
+            }
+        </>
     )
 }
 

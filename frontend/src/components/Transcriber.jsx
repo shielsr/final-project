@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+
 
 export default function Transcriber({ audioUrl, audioId, onComplete }) {
     // console.log('Transcriber props:', { audioUrl, audioId })
@@ -28,9 +30,9 @@ export default function Transcriber({ audioUrl, audioId, onComplete }) {
 
     return (
         <div>
-            <button onClick={run} disabled={!audioUrl || loading}>
+            <Button onClick={run} disabled={!audioUrl || loading}>
                 {loading ? 'Transcribing...' : 'Transcribe'}
-            </button>
+            </Button>
             {error && <p>{error}</p>}
             {transcription && <p>{transcription}</p>}
         </div>

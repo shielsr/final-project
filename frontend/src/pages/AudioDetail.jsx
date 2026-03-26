@@ -79,10 +79,10 @@ const AudioDetail = () => {
             <audio controls src={audio.url} className='w-full mb-4' />
 
             <div className='text-sm text-muted-foreground mb-4 space-y-1'>
-                {audio.creator_username && <div>👤 Created by: {audio.creator_username}</div>}
-                {audio.duration && <div>⏱ Duration: {formatDuration(audio.duration)}</div>}
-                {audio.file_size && <div>💾 File size: {formatFileSize(audio.file_size)}</div>}
-                {audio.created_at && <div>🗓 Recorded: {new Date(audio.created_at).toLocaleString()}</div>}
+                {audio.creator_username && <div>Created by: {audio.creator_username}</div>}
+                {audio.duration && <div>Length: {formatDuration(audio.duration)}</div>}
+                {audio.file_size && <div>Filesize: {formatFileSize(audio.file_size)}</div>}
+                {audio.created_at && <div>Recorded: {new Date(audio.created_at).toLocaleString()}</div>}
             </div>
 
             <Card className="mb-4">
@@ -166,13 +166,15 @@ const AudioDetail = () => {
                     </div>
 
                     <div className='flex gap-2 pt-2'>
-                        <Button type='submit' onClick={handleSubmit}>Save</Button>
-                        <Button variant='secondary' onClick={() => navigate('/record')}>Back</Button>
+                        <Button type='submit' onClick={handleSubmit}>Save details</Button>
+                        <Button variant='outline' onClick={() => navigate(-1)}>Back</Button>
+                    </div>
+                    <div className='flex gap-4 pt-2'>
                         {isCreator &&
                             <Button variant='destructive' onClick={() => {
                                 deleteAudio(audio, () => { })
                                 navigate('/audio')
-                            }}>Delete</Button>
+                            }}>Delete file</Button>
                         }
                     </div>
                 </CardContent>

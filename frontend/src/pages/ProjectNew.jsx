@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { createProject } from '../utils/api'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const ProjectNew = () => {
     const { isLoggedIn } = useAuth()
@@ -23,34 +25,32 @@ const ProjectNew = () => {
     if (!isLoggedIn) return null
 
     return (
-        <main className="content">
-            <div className="container-sm w-50 my-4">
-                <h1 className="text-center my-4">New Project</h1>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label for='project-title'>Title</Label>
-                        <Input
-                            type='text'
-                            id='project-title'
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                            required
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='project-description'>Description</Label>
-                        <Input
-                            type='text'
-                            id='project-description'
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                        />
-                    </FormGroup>
-                    <Button color='success' type='submit'>Create Project</Button>
-                    <Button color='secondary' className='ms-2' onClick={() => navigate('/projects')}>Cancel</Button>
-                </Form>
-            </div>
-        </main>
+        <>
+            <h1 className="text-3xl font-bold mb-6">New Project</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <Label htmlFor='project-title'>Title</Label>
+                    <Input
+                        id='project-title'
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <Label htmlFor='project-description'>Description</Label>
+                    <Input
+                        id='project-description'
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                    />
+                </div>
+                <div className="flex gap-2">
+                    <Button type='submit'>Create Project</Button>
+                    <Button variant='secondary' onClick={() => navigate('/projects')}>Cancel</Button>
+                </div>
+            </form>
+        </>
     )
 }
 

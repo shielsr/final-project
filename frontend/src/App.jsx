@@ -10,7 +10,7 @@ import './App.css'
 import Projects from './pages/Projects'
 import ProjectNew from './pages/ProjectNew'
 import ProjectDetail from './pages/ProjectDetail'
-
+import { Navbar1 } from '@/components/ui/navbar1'
 
 const AppContent = () => (
     <div className="App">
