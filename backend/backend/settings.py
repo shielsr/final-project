@@ -137,8 +137,6 @@ USE_TZ = True
 
 # STATIC_URL = 'static/'   # Old line
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
@@ -147,7 +145,7 @@ CORS_ORIGIN_WHITELIST = [
 STATIC_URL = "/assets/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # Auth
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('RENDER_EXTERNAL_HOSTNAME', '')]

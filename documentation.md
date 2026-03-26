@@ -103,6 +103,22 @@ It also opened up a lot of permissions issues that I hadn't planned for. A co-wr
 - Shouldn't be able to remove the owner from a project
 - Shouldn't be able to delete/remove an audio file
 
+# Deployment
+I followed the Unit 11 deployment instructions, but it didn't seem to cover the React side of things.
+
+In a case of terrible timing, Render switched off their community forums on March 24th (the day I started trying to deploy) so any relevant information in the forums was gone.
+
+I went around in circles and found a series on YouTube: https://www.youtube.com/watch?v=t8tkHO4Hi4U&list=PLmEKHA8iFrmDpiqMsEXowUz7-G2RCOyfr&index=3
+
+I spent hours hitting a wall with "vite: Permission denied". The problem was addressed in the Render forums (based on Google searches) but the pages were gone. I found this reference to the dead forum link: https://www.reddit.com/r/vercel/comments/1i9rur8/permission_denied_while_deploying_vite_app_on/
+
+I eventually figured out how to get rid of node_modules from github. 
+
+But then I hit issues around file case. At some point, I must have changed my lowercase component filenames to title case (from recorder to Recorder). GIthub didn't update though. 
+
+
+
+
 ## The flow of data when recording and transcribing
 
 - User records audio -> blob created in React using MediaRecording API

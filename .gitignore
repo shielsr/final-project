@@ -24,6 +24,7 @@ backend/media/
 # Frontend build output
 frontend/dist/
 frontend/node_modules/
+node_modules/
 
 # Static files copied from frontend build
 backend/static/assets/
