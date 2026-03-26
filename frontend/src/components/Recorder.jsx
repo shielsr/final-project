@@ -3,14 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { FaCircleStop, FaMicrophone } from 'react-icons/fa6'
 import { createAudio } from '../utils/api'
 
-
-
 const uploadToCloudinary = async (blob, title) => {
     const formData = new FormData()
     formData.append('file', blob, title)
     formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
-    formData.append('resource_type', 'video') // Cloudinary treats audio as 'video'
-    formData.append('public_id', title) // Pass the title to Cloudinary as the filename
+    formData.append('resource_type', 'video')
+    formData.append('public_id', title)
 
     const res = await fetch(
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/video/upload`,
@@ -19,12 +17,10 @@ const uploadToCloudinary = async (blob, title) => {
     return res.json()
 }
 
-
-
-export default function Recorder({ }) {
-    const navigate = useNavigate() // For the redirect at the end
-    const [isRecording, setIsRecording] = useState(false)  // Checks if the user is recording
-    const [seconds, setSeconds] = useState(0)               // Timer
+export default function Recorder() {
+    const navigate = useNavigate()
+    const [isRecording, setIsRecording] = useState(false)
+    const [seconds, setSeconds] = useState(0)
     const [uploading, setUploading] = useState(false)
 
     const mediaStream = useRef(null)
@@ -40,14 +36,11 @@ export default function Recorder({ }) {
             mediaStream.current = stream
             mediaRecorder.current = new MediaRecorder(stream)
             mediaRecorder.current.ondataavailable = (e) => {
-                if (e.data.size > 0) {
-                    chunks.current.push(e.data)
-                }
+                if (e.data.size > 0) chunks.current.push(e.data)
             }
             timerRef.current = setInterval(() => {
                 setSeconds(prev => prev + 1)
             }, 1000)
-
 
             mediaRecorder.current.onstop = async () => {
                 clearInterval(timerRef.current)
@@ -94,15 +87,26 @@ export default function Recorder({ }) {
     }
 
     return (
-        <div>
-            <h2>{formatTime(seconds)}</h2>
+        <div className="flex flex-col items-center gap-6">
+            <h2 className="text-4xl font-mono tracking-widest">{formatTime(seconds)}</h2>
 
             {isRecording
-                ? <button onClick={stopRecording}><FaCircleStop /></button>
-                : <button onClick={startRecording} disabled={uploading}><FaMicrophone /></button>
+                ? <button
+                    onClick={stopRecording}
+                    className="w-32 h-32 rounded-full bg-gray-700 hover:bg-gray-800 text-white flex items-center justify-center shadow-lg transition-all hover:scale-105"
+                >
+                    <FaCircleStop className="w-12 h-12" />
+                </button>
+                : <button
+                    onClick={startRecording}
+                    disabled={uploading}
+                    className="w-32 h-32 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg transition-all hover:scale-105 disabled:opacity-50"
+                >
+                    <FaMicrophone className="w-12 h-12" />
+                </button>
             }
 
-            {uploading && <p>Saving...</p>}
+            {uploading && <p className="text-muted-foreground text-sm animate-pulse">Saving...</p>}
         </div>
     )
 }

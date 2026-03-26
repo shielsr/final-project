@@ -2,9 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import Recorder from '../components/Recorder'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 const Record = () => {
   const { isLoggedIn } = useAuth()
@@ -17,12 +15,18 @@ const Record = () => {
   if (!isLoggedIn) return null
 
   return (
-    <>   
-          <div className="card-body text-center">
-            <h5 className="card-title">Record audio</h5>
+    <><h1 className="text-3xl font-bold mb-4">Record Audio</h1>
+      <div className="max-w-md mx-auto mt-16">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center">Press the buton to start and stop recording</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center">
             <Recorder />
-          </div>
-    </> 
+          </CardContent>
+        </Card>
+      </div>
+    </>
   )
 }
 

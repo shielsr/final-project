@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
-import { audioApi, projectApi, updateProject, getUsers, addCowriter, removeCowriter } from '../utils/api'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { audioApi, projectApi, updateProject, getUsers, addCowriter, removeCowriter, deleteProject } from '../utils/api'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { ChevronRight } from 'lucide-react'
 
 const ProjectDetail = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { isLoggedIn, username } = useAuth() // Updated with username for checking if it's the owner
+    const { isLoggedIn, username } = useAuth()
     const [project, setProject] = useState(null)
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [audios, setAudios] = useState([])
     const [error, setError] = useState(false)
-
-    // For adding and removing cowriters
     const [cowriters, setCowriters] = useState([])
     const [users, setUsers] = useState([])
     const [selectedUser, setSelectedUser] = useState('')
@@ -40,7 +43,6 @@ const ProjectDetail = () => {
             .catch(console.error)
     }, [id])
 
-    // This gets the cowriters
     useEffect(() => {
         getUsers().then(res => setUsers(res.data))
     }, [])
@@ -53,101 +55,147 @@ const ProjectDetail = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        updateProject({ id: project.id, title, description }, () => { })
+        updateProject({ id: project.id, title, description }, () => {})
     }
 
     if (error) return <p>Unable to load project</p>
     if (!project) return <p>Loading...</p>
 
     const isOwner = project.owner_username === username
-    
-    return (
-        <main className="content">
-            <div className="container-sm w-50 my-4">
-                <h1 className="text-center my-4">{project.title}</h1>
 
-                <Form onSubmit={handleSubmit} className="mb-4">
-                    <FormGroup>
-                        <Label for='project-title'>Title</Label>
+    return (
+        <>
+            <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
+
+            <div className="text-sm text-muted-foreground mb-4 space-y-1">
+                <div>Owner: {project.owner_username}</div>
+            </div>
+
+            <Card className="mb-4">
+                <CardHeader>
+                    <CardTitle>Edit Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div>
+                        <Label htmlFor='project-title'>Title</Label>
                         <Input
-                            type='text'
                             id='project-title'
                             value={title}
                             onChange={e => setTitle(e.target.value)}
                             required
                         />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='project-description'>Description</Label>
+                    </div>
+                    <div>
+                        <Label htmlFor='project-description'>Description</Label>
                         <Input
-                            type='text'
                             id='project-description'
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         />
-                    </FormGroup>
-                    <Button color='success' type='submit'>Save</Button>
-                    <Button color='secondary' className='ms-2' onClick={() => navigate('/projects')}>Back</Button>
-                    {isOwner && <Button color='danger' onClick={() => deleteProject(project)}>Delete Project</Button>}
-                </Form>
-
-                <h3>Audio Files</h3>
-                <ul className='list-group mb-4'>
-                    {audios.length === 0
-                        ? <li className='list-group-item'>No audio files in this project.</li>
-                        : audios.map(audio => (
-                            <li key={audio.id} className='list-group-item d-flex justify-content-between align-items-center'>
-                                <Link to={`/audio/${audio.id}`}>{audio.title}</Link>
-                                <span className='text-muted small'>
-                                    {audio.duration && <span className='me-2'>⏱ {formatDuration(audio.duration)}</span>}
-                                    {audio.file_size && <span>💾 {formatFileSize(audio.file_size)}</span>}
-                                </span>
-                            </li>
-                        ))
-                    }
-                </ul>
-
-                <h3>Writers</h3>
-                <ul className='list-group mb-3'>
-                    <li className='list-group-item d-flex justify-content-between align-items-center'>{project.owner_username} (project creator)</li>
-                    {cowriters.length === 0
-                        ? <li className='list-group-item'>No cowriters yet.</li>
-                        : cowriters.map(cw => (
-                            <li key={cw.id} className='list-group-item d-flex justify-content-between align-items-center'>
-                                <span>{cw.username}</span>
-                                <Button color='danger' size='sm' onClick={() =>
-                                    removeCowriter(id, cw.id)
-                                        .then(() => setCowriters(cowriters.filter(c => c.id !== cw.id)))
-                                }>Remove</Button>
-                            </li>
-                        ))
-                    }
-                </ul>
-                <div className='d-flex gap-2'>
-                    <Input
-                        type='select'
-                        value={selectedUser}
-                        onChange={e => setSelectedUser(e.target.value)}
-                    >
-                        <option value=''>Select a user...</option>
-                        {users
-                            .filter(u => !cowriters.find(cw => cw.id === u.id))
-                            .map(u => (
-                                <option key={u.id} value={u.id}>{u.username}</option>
-                            ))
+                    </div>
+                    <div className="flex gap-4 pt-2">
+                        <Button onClick={handleSubmit}>Save</Button>
+                        <Button variant='outline' onClick={() => navigate(-1)}>Back</Button>
+                        {isOwner &&
+                            <Button variant='destructive' onClick={() => {
+                                deleteProject(project, () => {})
+                                navigate('/projects')
+                            }}>Delete Project</Button>
                         }
-                    </Input>
-                    <Button color='success' disabled={!selectedUser} onClick={() =>
-                        addCowriter(id, selectedUser)
-                            .then(() => {
-                                const user = users.find(u => u.id === parseInt(selectedUser))
-                                setCowriters([...cowriters, user])
-                                setSelectedUser('')
-                            })
-                    }>Add</Button>
-                </div>
-            </div>
-        </main>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card className="mb-4">
+                <CardHeader>
+                    <CardTitle>Audio Files</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                    {audios.length === 0
+                        ? <p className="text-muted-foreground p-6">No audio files in this project.</p>
+                        : <div className="grid gap-4 p-4">
+                            {audios.map(audio => (
+                                <Card
+                                    key={audio.id}
+                                    className="hover:shadow-md transition-shadow cursor-pointer"
+                                    onClick={() => navigate(`/audio/${audio.id}`)}
+                                >
+                                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                        <CardTitle>{audio.title}</CardTitle>
+                                        <ChevronRight className="h-10 w-10 text-muted-foreground shrink-0" />
+                                    </CardHeader>
+                                    <CardContent className="pt-0">
+                                        <div className="text-sm text-muted-foreground flex gap-4">
+                                            {audio.duration && <span>Length: {formatDuration(audio.duration)}</span>}
+                                            {audio.file_size && <span>Filesize: {formatFileSize(audio.file_size)}</span>}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    }
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Writers</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <ul className="divide-y border rounded-md">
+                        <li className="px-4 py-3 text-sm font-medium">
+                            {project.owner_username} <span className="text-muted-foreground">(owner)</span>
+                        </li>
+                        {cowriters.map(cw => (
+                            <li key={cw.id} className="px-4 py-3 flex justify-between items-center">
+                                <span className="text-sm font-medium">{cw.username}</span>
+                                <Button
+                                    variant='destructive'
+                                    size='sm'
+                                    onClick={() =>
+                                        removeCowriter(id, cw.id)
+                                            .then(() => setCowriters(cowriters.filter(c => c.id !== cw.id)))
+                                    }
+                                >Remove</Button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="flex gap-2">
+                        <Select
+                            value={selectedUser || 'none'}
+                            onValueChange={val => setSelectedUser(val === 'none' ? '' : val)}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select a user..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='none'>Select a user...</SelectItem>
+                                {users
+                                    .filter(u => !cowriters.find(cw => cw.id === u.id))
+                                    .map(u => (
+                                        <SelectItem key={u.id} value={u.id.toString()}>
+                                            {u.username}
+                                        </SelectItem>
+                                    ))
+                                }
+                            </SelectContent>
+                        </Select>
+                        <Button
+                            disabled={!selectedUser || selectedUser === 'none'}
+                            onClick={() =>
+                                addCowriter(id, selectedUser)
+                                    .then(() => {
+                                        const user = users.find(u => u.id === parseInt(selectedUser))
+                                        setCowriters([...cowriters, user])
+                                        setSelectedUser('')
+                                    })
+                            }
+                        >Add</Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </>
     )
 }
 

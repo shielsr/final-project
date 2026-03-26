@@ -15,7 +15,7 @@ import { Navbar1 } from '@/components/ui/navbar1'
 const AppContent = () => (
     <div className="App">
         <Navigation />
-        <main className="p-8">
+        <main className="p-4">
             <div className="max-w-2xl mx-auto">
                 <Routes>
                     <Route path="/" element={<Home />} />

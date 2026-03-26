@@ -31,12 +31,12 @@ class AudioView(viewsets.ModelViewSet):
         project_id = self.request.query_params.get('project')
         
         if project_id:
-            return Audio.objects.filter(project__id=project_id)
+            return Audio.objects.filter(project__id=project_id).order_by('-created_at')
         
         return Audio.objects.filter(
             models.Q(creator=user) |
             models.Q(project__cowriters=user)
-        ).distinct()
+        ).distinct().order_by('-created_at')
             
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
