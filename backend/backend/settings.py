@@ -142,7 +142,7 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
 ]
     
-STATIC_URL = "/assets/"
+STATIC_URL = "/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
