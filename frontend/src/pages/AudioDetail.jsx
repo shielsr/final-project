@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 import { updateAudio, audioApi, getProjects, getTranscription, deleteAudio, getCategories } from '../utils/api'
 import Transcriber from '../components/Transcriber'
@@ -10,6 +9,9 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardAction, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 
 
 const AudioDetail = () => {
@@ -72,101 +74,110 @@ const AudioDetail = () => {
     const isCreator = audio.creator_username === username
 
     return (
-        <main className="content">
-            <div className="container-sm w-50 my-4">
-                <h1 className="text-center my-4">{audio.title}</h1>
-                <audio controls src={audio.url} className='w-100 my-3' />
-                <div className='text-muted small mb-3'>
-                    {audio.creator_username && <div>👤 Created by: {audio.creator_username}</div>}
-                    {audio.duration && <div>⏱ Duration: {formatDuration(audio.duration)}</div>}
-                    {audio.file_size && <div>💾 File size: {formatFileSize(audio.file_size)}</div>}
-                    {audio.created_at && <div>🗓 Recorded: {new Date(audio.created_at).toLocaleString()}</div>}
-                </div>
+        <>
+            <h1 className="text-3xl font-bold mb-4">{audio.title}</h1>
+            <audio controls src={audio.url} className='w-full mb-4' />
 
+            <div className='text-sm text-muted-foreground mb-4 space-y-1'>
+                {audio.creator_username && <div>👤 Created by: {audio.creator_username}</div>}
+                {audio.duration && <div>⏱ Duration: {formatDuration(audio.duration)}</div>}
+                {audio.file_size && <div>💾 File size: {formatFileSize(audio.file_size)}</div>}
+                {audio.created_at && <div>🗓 Recorded: {new Date(audio.created_at).toLocaleString()}</div>}
+            </div>
 
-
-                <div className='transcription'>
-                    <h3>Transcription:</h3>
+            <Card className="mb-4">
+                <CardHeader>
+                    <CardTitle>Transcription</CardTitle>
+                </CardHeader>
+                <CardContent>
                     {transcription
                         ? <p>{transcription.content}</p>
                         : <Transcriber audioUrl={audio.url} audioId={audio.id} onComplete={() => getTranscription(id, setTranscription)} />
                     }
-                </div>
+                </CardContent>
+            </Card>
 
-
-                <div className='card text-start'>
-                    <div className='card-body'>
-                        <h3 className='card-title'>Edit details</h3>
-                        <Form onSubmit={handleSubmit}>
-                            <FormGroup>
-                                <Label for='audio-title'>Title</Label>
-                                <Input
-                                    type='text'
-                                    id='audio-title'
-                                    value={title}
-                                    onChange={e => setTitle(e.target.value)}
-                                    required
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for='audio-description'>Description</Label>
-                                <Input
-                                    type='text'
-                                    id='audio-description'
-                                    value={description}
-                                    onChange={e => setDescription(e.target.value)}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <h4>Category</h4>
-                                {['type', 'section'].map(group => (
-                                    <div key={group} className='mb-3'>
-                                        <h5 className='text-capitalize'>{group}</h5>
-                                        <div className='d-flex flex-wrap gap-2'>
-                                            {categories
-                                                .filter(cat => cat.group === group)
-                                                .map(cat => (
-                                                    <span
-                                                        key={cat.id}
-                                                        onClick={() => toggleCategory(cat.id)}
-                                                        style={{ cursor: 'pointer' }}
-                                                        className={`badge ${(audio.categories || []).includes(cat.id) ? 'bg-primary' : 'bg-secondary'}`}
-                                                    >
-                                                        {cat.name}
-                                                    </span>
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
-                                ))}
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for='audio-project'>Project</Label>
-                                <Input
-                                    type='select'
-                                    id='audio-project'
-                                    value={audio.project || ''}
-                                    onChange={e => setAudio({ ...audio, project: e.target.value || null })}
-                                >
-                                    <option value=''>No project</option>
-                                    {projectList.map(project => (
-                                        <option key={project.id} value={project.id}>{project.title}</option>
-                                    ))}
-                                </Input>
-                            </FormGroup>
-                            <Button color='success' type='submit'>Save</Button>
-                            <Button color='secondary' className='ms-2' onClick={() => navigate('/record')}>Back</Button>
-                            {isCreator &&
-                                <Button color='danger' className='ms-2' onClick={() => {
-                                    deleteAudio(audio, () => { })
-                                    navigate('/audio')
-                                }}>Delete</Button>
-                            }
-                        </Form>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Edit Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div>
+                        <Label htmlFor='audio-title'>Title</Label>
+                        <Input
+                            id='audio-title'
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                            required
+                        />
                     </div>
-                </div>
-            </div>
-        </main>
+                    <div>
+                        <Label htmlFor='audio-description'>Description</Label>
+                        <Input
+                            id='audio-description'
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                        />
+                    </div>
+
+                    <div>
+                        <Label>Category</Label>
+                        {['type', 'section'].map(group => (
+                            <div key={group} className='mb-3'>
+                                <p className='text-sm font-medium capitalize mb-2'>{group}</p>
+                                <div className='flex flex-wrap gap-2'>
+                                    {categories
+                                        .filter(cat => cat.group === group)
+                                        .map(cat => (
+                                            <Badge
+                                                key={cat.id}
+                                                onClick={() => toggleCategory(cat.id)}
+                                                variant={(audio.categories || []).includes(cat.id) ? 'default' : 'outline'}
+                                                className='cursor-pointer'
+                                            >
+                                                {cat.name}
+                                            </Badge>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+
+                    <div>
+                        <Label htmlFor='audio-project'>Project</Label>
+                        <Select
+                            value={audio.project?.toString() || 'none'}
+                            onValueChange={val => setAudio({ ...audio, project: val === 'none' ? null : val })}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="No project" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='none'>No project</SelectItem>
+                                {projectList.map(project => (
+                                    <SelectItem key={project.id} value={project.id.toString()}>
+                                        {project.title}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className='flex gap-2 pt-2'>
+                        <Button type='submit' onClick={handleSubmit}>Save</Button>
+                        <Button variant='secondary' onClick={() => navigate('/record')}>Back</Button>
+                        {isCreator &&
+                            <Button variant='destructive' onClick={() => {
+                                deleteAudio(audio, () => { })
+                                navigate('/audio')
+                            }}>Delete</Button>
+                        }
+                    </div>
+                </CardContent>
+            </Card>
+        </>
     )
 }
 
