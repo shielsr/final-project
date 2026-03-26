@@ -154,7 +154,7 @@ DONE - Add permissions for cowriters
 DONE - I still have to figure out how to do categorization. I need a category model
 - Add testing for all models
 - Add testing for React components
-- Spruce up how it all looks (the UI, I mean)
+DONE - Spruce up how it all looks (the UI, I mean)
 - Add page titles
 - Use the linter
 DONE - Create postgres in Render
