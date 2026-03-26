@@ -36,5 +36,5 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path('api/auth/', include('authentication.urls')),
     path("api/transcribe/", views.transcribe_audio),
-    re_path(r"^(?!api/|assets/|admin/).*$", serve, kwargs={"path": "index.html", "document_root": settings.STATIC_ROOT}),
-]
+    re_path(r"^$", serve, kwargs={"path": "index.html", "document_root": settings.STATIC_ROOT}),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

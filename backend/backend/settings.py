@@ -144,9 +144,9 @@ CORS_ORIGIN_WHITELIST = [
 
 STATIC_URL = "/assets/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-WHITENOISE_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Auth
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('RENDER_EXTERNAL_HOSTNAME', '')]

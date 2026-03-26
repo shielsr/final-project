@@ -18,7 +18,7 @@ build/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-backend/staticfiles/
+# backend/staticfiles/
 backend/media/
 
 # Frontend build output
@@ -27,10 +27,10 @@ frontend/node_modules/
 node_modules/
 
 # Static files copied from frontend build
-backend/static/assets/
-backend/static/index*.html
-backend/static/index*.js
-backend/static/index*.css
+# backend/static/assets/
+# backend/static/index*.html
+# backend/static/index*.js
+# backend/static/index*.css
 
 # Environment variables
 .env
