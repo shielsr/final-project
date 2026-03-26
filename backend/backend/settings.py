@@ -141,11 +141,12 @@ USE_TZ = True
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
 ]
-    
+
 STATIC_URL = "/assets/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+WHITENOISE_ROOT = BASE_DIR / 'staticfiles'
 
 # Auth
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('RENDER_EXTERNAL_HOSTNAME', '')]
