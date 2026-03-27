@@ -45,6 +45,7 @@ The following is a step-by-step account of how I did the project, which closely 
 - I installed Shadcn to improve the appearance of the app
 - I sent the app out to friends and family for user testing
 - Fixed bugs found in user testing, e.g. the cowriter's files not being accessible to the project owner.
+- Finished writing all uniittests for
 
 
 
@@ -159,12 +160,12 @@ DONE - Tidy up the Recorder component
 DONE - Add co-writers to a project
 DONE - Add permissions for cowriters
 DONE - I still have to figure out how to do categorization. I need a category model
-- Add testing for all models
-- Add testing for React components
+DONE - Add testing for all models
 DONE - Spruce up how it all looks (the UI, I mean)
 DONE - Add page titles
-- Use the linter
+- Use Ruff linter
 - Documentation
+- Add docstrings to models
 DONE - Create postgres in Render
 DONE - Deploy successfully
 - Give feedback when Login and Register buttons are pressed
