@@ -117,3 +117,14 @@ export const getCategories = (setCategories) => {  // NEW
     .then(res => setCategories(res.data))
     .catch(console.error)
 }
+
+
+// Search
+
+export const search = (query) => {
+  return axios.get(`/api/search/?q=${query}`, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem('appAuthentication.access_token'))}`
+    }
+  })
+}

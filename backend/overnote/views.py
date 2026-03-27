@@ -7,13 +7,13 @@ from django.conf import settings
 from django.db import models
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view, action, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer, CategorySerializer
 from .models import Audio, Transcription, Project, CoWriter, Category
-
 
 
 class DebugDisableAuthentication(TokenAuthentication):
@@ -133,3 +133,50 @@ class CategoryView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     authentication_classes = [JWTAuthentication]
     queryset = Category.objects.all()
+    
+
+    
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def search(request):
+    query = request.query_params.get('q', '')
+    
+    if not query or len(query) < 2:
+        return Response({'audio': [], 'projects': [], 'transcriptions': []})
+    
+    user = request.user
+    
+    # Search audio files the user has access to
+    audio_results = Audio.objects.filter(
+        models.Q(creator=user) |
+        models.Q(project__cowriters=user) |
+        models.Q(project__owner=user)
+    ).filter(
+        models.Q(title__icontains=query) |
+        models.Q(description__icontains=query)
+    ).distinct()
+
+    # Search projects the user has access to
+    project_results = Project.objects.filter(
+        models.Q(owner=user) |
+        models.Q(cowriters=user)
+    ).filter(
+        models.Q(title__icontains=query) |
+        models.Q(description__icontains=query)
+    ).distinct()
+
+    # Search transcriptions for audio the user has access to
+    transcription_results = Transcription.objects.filter(
+        models.Q(audio__creator=user) |
+        models.Q(audio__project__cowriters=user) |
+        models.Q(audio__project__owner=user)
+    ).filter(
+        content__icontains=query
+    ).distinct()
+
+    return Response({
+        'audio': [{'id': a.id, 'title': a.title} for a in audio_results],
+        'projects': [{'id': p.id, 'title': p.title} for p in project_results],
+        'transcriptions': [{'id': t.audio.id, 'title': t.audio.title, 'excerpt': t.content[:100]} for t in transcription_results],
+    })

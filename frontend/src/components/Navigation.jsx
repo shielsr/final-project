@@ -31,6 +31,9 @@ const Navigation = () => {
             <SheetClose asChild>
                 <NavLink to="/projects" className="text-lg font-medium hover:underline">Projects</NavLink>
             </SheetClose>
+            <SheetClose asChild>
+                <NavLink to="/search" className="text-lg font-medium hover:underline">Search</NavLink>
+            </SheetClose>
             <Button variant="outline" onClick={handleLogout} className="text-lg font-medium hover:underline text-left">Logout</Button>
         </>
     ) : (
@@ -49,8 +52,8 @@ const Navigation = () => {
             {/* Desktop */}
             <div className="hidden lg:flex border-b px-8 py-4 items-center justify-between">
                 <div>
-                    <NavLink to="/record" className="text-xl font-bold">Overnote</NavLink>
-                    <p className="text-sm text-muted-foreground">Take notes on the go</p>
+                    <NavLink to="/" className="text-xl font-bold">Overnote</NavLink>
+                    <p className="text-sm text-muted-foreground">Creative notes on the go</p>
                 </div>
 
                 <NavigationMenu>
@@ -70,6 +73,11 @@ const Navigation = () => {
                                 <NavigationMenuItem>
                                     <NavigationMenuLink asChild>
                                         <NavLink to="/projects">Projects</NavLink>
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuLink asChild>
+                                        <NavLink to="/search">Search</NavLink>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
@@ -96,7 +104,7 @@ const Navigation = () => {
 
             {/* Mobile */}
             <div className="flex lg:hidden border-b px-4 py-4 items-center justify-between">
-                <NavLink to="/record" className="text-xl font-bold">Overnote</NavLink>
+                <NavLink to="/" className="text-xl font-bold">Overnote</NavLink>
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="ghost" size="icon">

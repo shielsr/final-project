@@ -11,6 +11,8 @@ import Projects from './pages/Projects'
 import ProjectNew from './pages/ProjectNew'
 import ProjectDetail from './pages/ProjectDetail'
 import { Navbar1 } from '@/components/ui/navbar1'
+import Search from './pages/Search'
+
 
 const AppContent = () => (
     <div className="App">
@@ -28,6 +30,7 @@ const AppContent = () => (
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projects/new" element={<ProjectNew />} />
                     <Route path="/projects/:id" element={<ProjectDetail />} />
+                    <Route path="/search" element={<Search />} />
                 </Routes>
             </div>
         </main>

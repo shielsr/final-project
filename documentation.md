@@ -168,6 +168,6 @@ DONE - Add page titles
 - Add docstrings to models
 DONE - Create postgres in Render
 DONE - Deploy successfully
-- Give feedback when Login and Register buttons are pressed
-- Bonus: Search transcripts
+DONE - Give feedback when Login and Register buttons are pressed
+DONE - Bonus: Search transcripts
 - Bonus: Share projects with the public

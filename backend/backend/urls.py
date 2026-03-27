@@ -25,6 +25,11 @@ from django.views.static import serve
 from rest_framework import routers
 from overnote import views
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+
 router = routers.DefaultRouter()
 router.register(r"audiofiles", views.AudioView, "audio")
 router.register(r"projects", views.ProjectView, "project")
@@ -36,5 +41,6 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path('api/auth/', include('authentication.urls')),
     path("api/transcribe/", views.transcribe_audio),
+    path("api/search/", views.search),
     re_path(r"^$", serve, kwargs={"path": "index.html", "document_root": settings.STATIC_ROOT}),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

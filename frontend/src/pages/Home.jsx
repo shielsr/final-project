@@ -10,12 +10,12 @@ const Home = () => {
 
   return (
     <>
-      <PageTitle title="Welcome" />
-      <p className="mb-6">
+      <PageTitle title="Welcome to Overnote" />
+      <h4 className="pb-6">
         {isLoggedIn
-          ? `Welcome, ${username}! You're logged in.`
+          ? `Hi ${username}! You're logged in.`
           : 'Hi, please log in (or register) to use the site'}
-      </p>
+      </h4>
 
       {!isLoggedIn && (
         <div className="flex gap-2 mb-6">
