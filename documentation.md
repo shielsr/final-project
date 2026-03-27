@@ -41,6 +41,11 @@ The following is a step-by-step account of how I did the project, which closely 
 - Cowriters can be added to projects
 - Added a category table
 - Add category tags on Audio detail page
+- After an ordeal I successfully deployed the web service and postgres to Render
+- I installed Shadcn to improve the appearance of the app
+- I sent the app out to friends and family for user testing
+- Fixed bugs found in user testing, e.g. the cowriter's files not being accessible to the project owner.
+
 
 
 Brainstorming name ideas:
