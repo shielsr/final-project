@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 
-
 export default function Transcriber({ audioUrl, audioId, onComplete }) {
-    // console.log('Transcriber props:', { audioUrl, audioId })
     const [transcription, setTranscription] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -20,7 +18,7 @@ export default function Transcriber({ audioUrl, audioId, onComplete }) {
             const data = await res.json()
             if (data.error) throw new Error(data.error)
             setTranscription(data.transcription)
-            if (onComplete) onComplete()  // For refreshing the audio after getting a transcription
+            if (onComplete) onComplete()
         } catch (err) {
             setError(err.message)
         } finally {
@@ -30,11 +28,11 @@ export default function Transcriber({ audioUrl, audioId, onComplete }) {
 
     return (
         <div>
-            <Button onClick={run} disabled={!audioUrl || loading}>
-                {loading ? 'Transcribing...' : 'Transcribe'}
+            <Button onClick={run} disabled={!audioUrl} loading={loading}>
+                Transcribe
             </Button>
-            {error && <p>{error}</p>}
-            {transcription && <p>{transcription}</p>}
+            {error && <p className="text-sm text-destructive mt-2">{error}</p>}
+            {transcription && <p className="mt-2">{transcription}</p>}
         </div>
     )
 }

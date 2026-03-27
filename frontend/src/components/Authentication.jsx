@@ -12,6 +12,7 @@ const AuthForm = ({ onSubmit, fields, submitButtonText, title }) => {
     fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
   );
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,11 +21,14 @@ const AuthForm = ({ onSubmit, fields, submitButtonText, title }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       await onSubmit(formData);
     } catch (error) {
       console.error("AuthForm submission error:", error);
       setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,7 +56,9 @@ const AuthForm = ({ onSubmit, fields, submitButtonText, title }) => {
                 />
               </div>
             ))}
-            <Button type="submit" className="w-full">{submitButtonText}</Button>
+            <Button type="submit" className="w-full" loading={loading}>
+              {submitButtonText}
+            </Button>
           </form>
         </CardContent>
       </Card>

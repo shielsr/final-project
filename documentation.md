@@ -162,5 +162,6 @@ DONE - Add page titles
 - Documentation
 DONE - Create postgres in Render
 DONE - Deploy successfully
+- Give feedback when Login and Register buttons are pressed
 - Bonus: Search transcripts
 - Bonus: Share projects with the public
