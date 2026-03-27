@@ -11,7 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardAction, CardD
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
+import PageTitle from '../components/PageTitle'
 
 
 const AudioDetail = () => {
@@ -73,9 +73,11 @@ const AudioDetail = () => {
 
     const isCreator = audio.creator_username === username
 
+
+    
     return (
         <>
-            <h1 className="text-3xl font-bold mb-4">{audio.title}</h1>
+            <PageTitle title={audio.title} />
             <audio controls src={audio.url} className='w-full mb-4' />
 
             <div className='text-sm text-muted-foreground mb-4 space-y-1'>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import Recorder from '../components/Recorder'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import PageTitle from '../components/PageTitle'
 
 const Record = () => {
   const { isLoggedIn } = useAuth()
@@ -15,7 +16,8 @@ const Record = () => {
   if (!isLoggedIn) return null
 
   return (
-    <><h1 className="text-3xl font-bold mb-4">Record Audio</h1>
+    <>
+      <PageTitle title="Record audio" />
       <div className="max-w-md mx-auto mt-16">
         <Card>
           <CardHeader>

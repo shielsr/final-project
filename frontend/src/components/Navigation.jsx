@@ -59,12 +59,12 @@ const Navigation = () => {
                             <>
                                 <NavigationMenuItem>
                                     <NavigationMenuLink asChild>
-                                        <NavLink to="/audio">My Files</NavLink>
+                                        <NavLink to="/record">Record</NavLink>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavigationMenuLink asChild>
-                                        <NavLink to="/record">Record</NavLink>
+                                        <NavLink to="/audio">My Files</NavLink>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>

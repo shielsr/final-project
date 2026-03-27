@@ -116,6 +116,8 @@ I hit issues around file case. At some point, I must have changed my lowercase c
 
 Eventually I gave up and went back to the course videos. It turns out Yoni explained the approach of static files in Unit 15 (from around 48 minutes on), which I watched at the time but forgot about. Once I followed that, it was relatively plain sailing.
 
+# PageTitle component
+I wanted to give every page a <title> which would also double as the page's H1 title. I thought a small component would be handy here.
 
 ## The flow of data when recording and transcribing
 
@@ -155,8 +157,9 @@ DONE - I still have to figure out how to do categorization. I need a category mo
 - Add testing for all models
 - Add testing for React components
 DONE - Spruce up how it all looks (the UI, I mean)
-- Add page titles
+DONE - Add page titles
 - Use the linter
+- Documentation
 DONE - Create postgres in Render
 DONE - Deploy successfully
 - Bonus: Search transcripts

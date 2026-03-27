@@ -5,6 +5,7 @@ import { getProjects, deleteProject } from '../utils/api'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { ChevronRight } from 'lucide-react'
+import PageTitle from '../components/PageTitle'
 
 const Projects = () => {
     const { isLoggedIn } = useAuth()
@@ -23,9 +24,9 @@ const Projects = () => {
 
     return (
         <>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Projects</h1>
-                <Button onClick={() => navigate('/projects/new')}>New Project</Button>
+            <div className="flex justify-between">
+                <PageTitle title="Projects" />
+                <Button onClick={() => navigate('/projects/new')}>Create new project</Button>
             </div>
 
             {projectList.length === 0

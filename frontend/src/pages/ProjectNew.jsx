@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import PageTitle from '../components/PageTitle'
 
 const ProjectNew = () => {
     const { isLoggedIn } = useAuth()
@@ -19,7 +20,7 @@ const ProjectNew = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await createProject({ title, description }, () => {})
+        await createProject({ title, description }, () => { })
         navigate('/projects')
     }
 
@@ -27,7 +28,7 @@ const ProjectNew = () => {
 
     return (
         <>
-            <h1 className="text-3xl font-bold mb-6">New Project</h1>
+            <PageTitle title="New project" />
             <Card>
                 <CardHeader>
                     <CardTitle>Project Details</CardTitle>

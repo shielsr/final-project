@@ -35,7 +35,8 @@ class AudioView(viewsets.ModelViewSet):
         
         return Audio.objects.filter(
             models.Q(creator=user) |
-            models.Q(project__cowriters=user)
+            models.Q(project__cowriters=user) |
+            models.Q(project__owner=user) 
         ).distinct().order_by('-created_at')
             
     def perform_create(self, serializer):

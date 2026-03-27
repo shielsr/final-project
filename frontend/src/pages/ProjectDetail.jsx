@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ChevronRight } from 'lucide-react'
+import PageTitle from '../components/PageTitle'
 
 const ProjectDetail = () => {
     const { id } = useParams()
@@ -55,7 +56,7 @@ const ProjectDetail = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        updateProject({ id: project.id, title, description }, () => {})
+        updateProject({ id: project.id, title, description }, () => { })
     }
 
     if (error) return <p>Unable to load project</p>
@@ -65,8 +66,7 @@ const ProjectDetail = () => {
 
     return (
         <>
-            <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
-
+            <PageTitle title={project.title} />
             <div className="text-sm text-muted-foreground mb-4 space-y-1">
                 <div>Owner: {project.owner_username}</div>
             </div>
@@ -98,7 +98,7 @@ const ProjectDetail = () => {
                         <Button variant='outline' onClick={() => navigate(-1)}>Back</Button>
                         {isOwner &&
                             <Button variant='destructive' onClick={() => {
-                                deleteProject(project, () => {})
+                                deleteProject(project, () => { })
                                 navigate('/projects')
                             }}>Delete Project</Button>
                         }

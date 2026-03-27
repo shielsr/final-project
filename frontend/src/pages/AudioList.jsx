@@ -5,6 +5,7 @@ import { getAudios } from '../utils/api'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { ChevronRight } from 'lucide-react'
+import PageTitle from '../components/PageTitle'
 
 const AudioList = () => {
     const { isLoggedIn } = useAuth()
@@ -23,7 +24,7 @@ const AudioList = () => {
 
     return (
         <>
-            <h1 className="text-3xl font-bold mb-6">Audio Files</h1>
+            <PageTitle title="My files" />
             {audioList.length === 0
                 ? <p className="text-muted-foreground">No audio files yet.</p>
                 : <div className="grid gap-4">
