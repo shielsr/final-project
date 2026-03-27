@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Audio, Transcription, Project, Category
+from .models import Audio, Transcription, Project, Category, SongwriterProfile
 
 class TranscriptionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -26,3 +26,8 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name', 'group')
+        
+class SongwriterProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SongwriterProfile
+        fields = ('bio', 'website', 'created_at')

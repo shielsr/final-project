@@ -12,9 +12,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer, CategorySerializer
-from .models import Audio, Transcription, Project, CoWriter, Category
-
+from .serializers import AudioSerializer, ProjectSerializer, TranscriptionSerializer, CategorySerializer, SongwriterProfileSerializer
+from .models import Audio, Transcription, Project, CoWriter, Category, SongwriterProfile
 
 class DebugDisableAuthentication(TokenAuthentication):
     def authenticate_credentials(self, key):
@@ -180,3 +179,14 @@ def search(request):
         'projects': [{'id': p.id, 'title': p.title} for p in project_results],
         'transcriptions': [{'id': t.audio.id, 'title': t.audio.title, 'excerpt': t.content[:100]} for t in transcription_results],
     })
+    
+
+class SongwriterProfileView(viewsets.ModelViewSet):
+    serializer_class = SongwriterProfileSerializer
+    authentication_classes = [JWTAuthentication]
+
+    def get_queryset(self):
+        return SongwriterProfile.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

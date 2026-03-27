@@ -34,6 +34,9 @@ const Navigation = () => {
             <SheetClose asChild>
                 <NavLink to="/search" className="text-lg font-medium hover:underline">Search</NavLink>
             </SheetClose>
+            <SheetClose asChild>
+                <NavLink to="/profile" className="text-lg font-medium hover:underline">Profile</NavLink>
+            </SheetClose>
             <Button variant="outline" onClick={handleLogout} className="text-lg font-medium hover:underline text-left">Logout</Button>
         </>
     ) : (
@@ -78,6 +81,11 @@ const Navigation = () => {
                                 <NavigationMenuItem>
                                     <NavigationMenuLink asChild>
                                         <NavLink to="/search">Search</NavLink>
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuLink asChild>
+                                        <NavLink to="/profile">Profile</NavLink>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>

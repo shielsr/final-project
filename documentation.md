@@ -43,10 +43,25 @@ The following is a step-by-step account of how I did the project, which closely 
 - Add category tags on Audio detail page
 - After an ordeal I successfully deployed the web service and postgres to Render
 - I installed Shadcn to improve the appearance of the app
+- Finished writing all uniittests for my models
 - I sent the app out to friends and family for user testing
 - Fixed bugs found in user testing, e.g. the cowriter's files not being accessible to the project owner.
-- Finished writing all uniittests for
+- Created a very basic profile page, using the SongwriterProfile model that I created at the very beginning
+- As a bonus feature, I created a Search page that queries the audio file names, project names and transcriptions. 
+- As a final bonus feature, I added filters to the Audio List page, which used the same category tags as used on the Audio Detail pages.
 
+# Future features
+
+Future features I would work on next include:
+
+## Pagination
+On the audio list and project list pages
+
+## Shareable public link
+This was part of my original plan, but I didn't have enough time to implement it. I also felt that the owner/cowriter roles and the related permissions covered the requirements for this project.
+
+## Adding cowriters
+As stated elsewhere, the 'cowriter select' that I've implemented on the Project Detail page is not ideal or scaleable. I would like to set up an 'Invite a cowriter' email system, where users could send email invitations to others. This would avoid my current setup of simply listing all available users.
 
 
 Brainstorming name ideas:
@@ -163,6 +178,7 @@ DONE - I still have to figure out how to do categorization. I need a category mo
 DONE - Add testing for all models
 DONE - Spruce up how it all looks (the UI, I mean)
 DONE - Add page titles
+DONE - Profile page
 - Use Ruff linter
 - Documentation
 - Add docstrings to models
@@ -171,3 +187,54 @@ DONE - Deploy successfully
 DONE - Give feedback when Login and Register buttons are pressed
 DONE - Bonus: Search transcripts
 - Bonus: Share projects with the public
+
+
+# FInal Assignment - "Overnote"
+
+## Website URL
+https://overnote-app.onrender.com/
+
+## Github Repo
+https://github.com/shielsr/final-project
+
+## Documentation
+1. [View setup instructions](setup.md)
+
+2. [View Documentation](documentation.md)
+
+# Instructions on how to deploy the site
+
+## Part 1: New Postgres on Render.com
+
+Create a new Postgres on Render.com
+
+Name the postgres and database
+
+Choose the Free plan and press Create Database
+
+Copy the Internal Database URL to your clipboard (you'll need it shortly)
+
+<br>
+
+## Part 2: New Web Service on Render.com
+
+Create a new Web Service on Render.com
+
+Select the Git repository where you committed your files.
+
+Give your web service a name
+
+
+### Additional settings:
+
+Root Directory:
+
+backend/  (Note: This depends on what folder you upload to Github and may not be necessary)
+
+Build Command:
+
+uv sync && uv run manage.py collectstatic && uv run manage.py migrate && uv run manage.py ensure_adminuser
+
+Start Command:
+
+gunicorn fanfic_site.wsgi:application

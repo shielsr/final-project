@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
-import { getAudios } from '../utils/api'
+import { getAudios, getCategories } from '../utils/api'
 import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { ChevronRight } from 'lucide-react'
 import PageTitle from '../components/PageTitle'
 
@@ -11,6 +12,8 @@ const AudioList = () => {
     const { isLoggedIn } = useAuth()
     const navigate = useNavigate()
     const [audioList, setAudioList] = useState([])
+    const [categories, setCategories] = useState([])
+    const [selectedCategories, setSelectedCategories] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -22,19 +25,57 @@ const AudioList = () => {
             setAudioList(data)
             setLoading(false)
         })
+        getCategories(setCategories)
     }, [])
+
+    const toggleCategory = (id) => {
+        setSelectedCategories(prev =>
+            prev.includes(id)
+                ? prev.filter(c => c !== id)
+                : [...prev, id]
+        )
+    }
+
+    const filteredAudio = selectedCategories.length === 0
+        ? audioList
+        : audioList.filter(audio =>
+            selectedCategories.every(catId =>
+                (audio.categories || []).includes(catId)
+            )
+        )
 
     if (!isLoggedIn) return null
 
     return (
         <>
             <PageTitle title="My files" />
+
+            {categories.length > 0 && (
+                <div className="mb-6">
+                    <p className="text-sm font-medium mb-2">Filter by category:</p>
+                    <div className="flex flex-wrap gap-2">
+                        {categories.map(cat => (
+                            <Badge
+                                key={cat.id}
+                                onClick={() => toggleCategory(cat.id)}
+                                variant={selectedCategories.includes(cat.id) ? 'default' : 'outline'}
+                                className="cursor-pointer"
+                            >
+                                {cat.name}
+                            </Badge>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {loading
                 ? <p className="text-muted-foreground">Getting your files...</p>
-                : audioList.length === 0
-                    ? <p className="text-muted-foreground">No audio files yet.</p>
+                : filteredAudio.length === 0
+                    ? <p className="text-muted-foreground">
+                        {selectedCategories.length > 0 ? 'No files match the selected filters.' : 'No audio files yet.'}
+                      </p>
                     : <div className="grid gap-4">
-                        {audioList.map(audio => (
+                        {filteredAudio.map(audio => (
                             <Card
                                 key={audio.id}
                                 size="lg"
