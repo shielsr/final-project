@@ -190,3 +190,7 @@ class SongwriterProfileView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        
+    def create(self, request, *args, **kwargs):
+        print('Profile create data:', request.data)
+        return super().create(request, *args, **kwargs)

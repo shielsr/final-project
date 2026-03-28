@@ -30,4 +30,4 @@ class CategorySerializer(serializers.ModelSerializer):
 class SongwriterProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = SongwriterProfile
-        fields = ('bio', 'website', 'created_at')
+        fields = ('id', 'bio', 'website', 'created_at')
