@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import PageTitle from '../components/PageTitle'
 
 const Search = () => {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, isLoading } = useAuth()
     const navigate = useNavigate()
     const [query, setQuery] = useState('')
     const [results, setResults] = useState(null)
@@ -31,8 +31,8 @@ const Search = () => {
         }
     }
 
-    if (!isLoggedIn) {
-        navigate('/login')
+    if (isLoading || !isLoggedIn) {
+        if (!isLoading && !isLoggedIn) navigate('/login')
         return null
     }
 

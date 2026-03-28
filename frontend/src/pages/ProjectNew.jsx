@@ -9,14 +9,14 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import PageTitle from '../components/PageTitle'
 
 const ProjectNew = () => {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, isLoading } = useAuth()
     const navigate = useNavigate()
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
     useEffect(() => {
-        if (!isLoggedIn) navigate('/login')
-    }, [isLoggedIn, navigate])
+        if (!isLoading && !isLoggedIn) navigate('/login')
+    }, [isLoggedIn, isLoading, navigate])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,7 +24,7 @@ const ProjectNew = () => {
         navigate('/projects')
     }
 
-    if (!isLoggedIn) return null
+    if (isLoading || !isLoggedIn) return null
 
     return (
         <>

@@ -26,12 +26,12 @@ const AppContent = () => (
                     <Route path="/record" element={<Record />} />
                     <Route path="/audio" element={<AudioList />} />
                     <Route path="/audio/:id" element={<AudioDetail />} />
-                    <Route path="*" element={<h2>404 Not Found</h2>} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projects/new" element={<ProjectNew />} />
                     <Route path="/projects/:id" element={<ProjectDetail />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="*" element={<h2>404 Not Found</h2>} />
                 </Routes>
             </div>
         </main>

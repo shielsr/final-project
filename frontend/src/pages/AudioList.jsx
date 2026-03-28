@@ -9,7 +9,7 @@ import { ChevronRight } from 'lucide-react'
 import PageTitle from '../components/PageTitle'
 
 const AudioList = () => {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, isLoading } = useAuth()
     const navigate = useNavigate()
     const [audioList, setAudioList] = useState([])
     const [categories, setCategories] = useState([])
@@ -17,8 +17,8 @@ const AudioList = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!isLoggedIn) navigate('/login')
-    }, [isLoggedIn, navigate])
+        if (!isLoading && !isLoggedIn) navigate('/login')
+    }, [isLoggedIn, isLoading, navigate])
 
     useEffect(() => {
         getAudios((data) => {
@@ -44,7 +44,7 @@ const AudioList = () => {
             )
         )
 
-    if (!isLoggedIn) return null
+    if (isLoading || !isLoggedIn) return null
 
     return (
         <>

@@ -17,7 +17,7 @@ profileApi.interceptors.request.use(config => {
 })
 
 const Profile = () => {
-    const { isLoggedIn, username } = useAuth()
+    const { isLoggedIn, isLoading, username } = useAuth()
     const navigate = useNavigate()
     const [bio, setBio] = useState('')
     const [website, setWebsite] = useState('')
@@ -26,8 +26,8 @@ const Profile = () => {
     const [profileId, setProfileId] = useState(null)
 
     useEffect(() => {
-        if (!isLoggedIn) navigate('/login')
-    }, [isLoggedIn, navigate])
+        if (!isLoading && !isLoggedIn) navigate('/login')
+    }, [isLoggedIn, isLoading, navigate])
 
     useEffect(() => {
         profileApi.get('/')
@@ -60,7 +60,7 @@ const Profile = () => {
         }
     }
 
-    if (!isLoggedIn) return null
+    if (isLoading || !isLoggedIn) return null
 
     return (
         <>

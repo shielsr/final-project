@@ -26,6 +26,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     checkLoginStatus();
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(false);
       setUsername(null);
     }
+    setIsLoading(false);
   };
 
   const login = (accessToken, refreshToken, user) => {
@@ -50,6 +52,12 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
     setUsername(user);
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("Login successful, isLoggedIn is now:", isLoggedIn);
+    }
+  }, [isLoggedIn]);
 
   const logout = () => {
     authStorage.clear();
@@ -65,6 +73,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         isLoggedIn,
         username,
+        isLoading,
         login,
         logout,
         checkLoginStatus,

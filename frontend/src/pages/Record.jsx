@@ -6,14 +6,14 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import PageTitle from '../components/PageTitle'
 
 const Record = () => {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, isLoading } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!isLoggedIn) navigate('/login')
-  }, [isLoggedIn, navigate])
+    if (!isLoading && !isLoggedIn) navigate('/login')
+  }, [isLoggedIn, isLoading, navigate])
 
-  if (!isLoggedIn) return null
+  if (isLoading || !isLoggedIn) return null
 
   return (
     <>

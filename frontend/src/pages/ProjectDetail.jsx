@@ -14,7 +14,7 @@ import PageTitle from '../components/PageTitle'
 const ProjectDetail = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { isLoggedIn, username } = useAuth()
+    const { isLoggedIn, isLoading, username } = useAuth()
     const [project, setProject] = useState(null)
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -25,8 +25,8 @@ const ProjectDetail = () => {
     const [selectedUser, setSelectedUser] = useState('')
 
     useEffect(() => {
-        if (!isLoggedIn) navigate('/login')
-    }, [isLoggedIn, navigate])
+        if (!isLoading && !isLoggedIn) navigate('/login')
+    }, [isLoggedIn, isLoading, navigate])
 
     useEffect(() => {
         projectApi.get(`/${id}/`)

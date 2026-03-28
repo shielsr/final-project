@@ -8,14 +8,14 @@ import { ChevronRight } from 'lucide-react'
 import PageTitle from '../components/PageTitle'
 
 const Projects = () => {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, isLoading } = useAuth()
     const navigate = useNavigate()
     const [projectList, setProjectList] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!isLoggedIn) navigate('/login')
-    }, [isLoggedIn, navigate])
+        if (!isLoading && !isLoggedIn) navigate('/login')
+    }, [isLoggedIn, isLoading, navigate])
 
     useEffect(() => {
         getProjects((data) => {
@@ -24,7 +24,7 @@ const Projects = () => {
         })
     }, [])
 
-    if (!isLoggedIn) return null
+    if (isLoading || !isLoggedIn) return null
 
     return (
         <>
