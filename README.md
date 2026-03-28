@@ -13,7 +13,7 @@ https://github.com/shielsr/final-project
 
 
 ## Project goal
-The goal of the project is to create a voice memo app for songwriters (or any type of creator) that allows them to record and manage their ideas.
+The goal of the project is to create a voice memo app for songwriters that allows them to record and manage their ideas into projects, categories etc.
 
 ## Features
 ### As a Songwriter, the user can:
@@ -36,7 +36,6 @@ The goal of the project is to create a voice memo app for songwriters (or any ty
 
 # Instructions on how to use the site
 
-<br>
 
 ## Navbar
 
@@ -48,7 +47,7 @@ The buttons change based on logged-in status.
 
 ## Register
 
-Users can register via the form on /register.
+Users can register via the form at /register.
 
 Their passwords are hashed in the database. 
 
@@ -74,7 +73,7 @@ As soon as the user stops recording, they are taken to the Audio detail page.
 
 <br>
 
-## Audio detail (/audio/idNumber)
+## Audio detail (/audio/id)
 
 Edit audio metadata, including name and description.
 
@@ -104,7 +103,7 @@ Press the 'Create new project' button to create a new project.
 
 <br>
 
-## Project detail (/project/idNumber)
+## Project detail (/projects/id)
 
 Edit project data, including name and description.
 

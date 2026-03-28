@@ -23,8 +23,8 @@
 #### Search transcripts:
 [MUST] As a songwriter, I want to do a text search of audio file transcripts, so I can easily find lyric ideas in my files.
 
-#### Search metadata:
-[MUST] As a songwriter, I want to search file and project metadata, so I can easily find files and projects.
+#### Search file and project data:
+[MUST] As a songwriter, I want to search file and project data, so I can find what I want based on title and description.
 
 #### Add co-writers:
 [MUST] As a songwriter, I want to add other users to my projects, so I can collaborate with other writers.
@@ -34,7 +34,7 @@
 ### Co-writer user stories:
 
 #### Get added to projects
-[MUST] As a co-writer, I want to be added to projects, so I can collaborate on songs with my peers
+[MUST] As a co-writer, I want to be added to projects, so I can collaborate on songs with my peers.
 
 #### Add my files to another user's project
 [MUST] As a co-writer, I want to add my files to another user's project, so I can contribute ideas to a song.
@@ -58,6 +58,8 @@
 #### Comment as a listener:
 [SHOULD] As a listener, I want to comment on projects, so I can give feedback to other users.
 
+<br>
+<br>
 
 ## Content
 
@@ -119,13 +121,16 @@ The following is a step-by-step account of how I did the project, which closely 
 - Fixed bug where the Profile page changes weren't saving.
 - Fixed the page refresh bug, where refreshing the page would send the user to the /login page.
 - Addressed a bug with the Transcriber component. See below for full explanation.
+- Added html to pull in favicon.ico.
+- Ran Ruff linter and fixed 9 errors.
+- Ran unittests again and found no errors.
 
 <br>
 <br>
 
 # Project Details
 
-## 1. Application structure
+## Application structure
 ### Backend Framework
 I followed Yoni's lessons to set up the Django framework.
 
@@ -159,7 +164,6 @@ Audio	-	one to one - Transcription
 
 Audio 	-	one to many - Category
 
-Project	-	one to many	- ProjectTag
 
 <br>
 
@@ -167,14 +171,28 @@ Project	-	one to many	- ProjectTag
 
 I built the frontend in React.
 
+I used a combination of pages and components to build the app.
+
 For styling, I initially prototyped with Reactstrap, and switched to Shadcn later in development.
 
 <br>
 
-## 2. Core features
 
-### The flow of data when recording and transcribing
-It look a lot of work to get the MediaRecording API, Cloudinary and AssemblyAI all working in harmony. This is how the flow works.
+
+# Features
+
+## 1. User registration and login
+I followed the Unit 16 tutorial on setting up registration and login with React & Django.
+
+Passwords are securely hased in the database.
+
+Please note that I didn't implement a password recovery feature for this assignment. As with the previous assignment (Frameworks), Render no longer handles emails, so I did not factor it into this assignment. Future development would involve using an extermal mail service. 
+
+
+## 2. Idea-specific features
+
+### a. The flow of data when recording and transcribing
+It look a lot of work to get the MediaRecording API, Cloudinary and AssemblyAI all working in harmony. This is how the flow works:
 
 #### Recording
 - User records audio -> blob created in React using MediaRecording API
@@ -194,18 +212,14 @@ Save Cloudinary URL to Django
 Transcribe audio via AssemblyAI
 Save the transcription back to Django
 
+### b. The Audio/Project relationship
+I wanted users to be able to record audio without having to add it to a project. It's all about convenience - a user should be able to record audio on the go, then return to it later to assign it to a project (if they want). Also, when a project is deleted, the audio files are not be deleted; they return to the unassigned pool.
 
-### The Audio/Project relationship
-I wanted users to be able to record without having to add it to a project. It's all about convenience - a user should be able to record audio on the go, then return to it later to assign it to a project (if they want). Also, when a project is deleted, the audio files are not be deleted; they return to the unassigned pool.
+### c. Audio metadata
+Earlier in the project, I wanted to show audio metadata in a few places. The duration and file size were saved in seconds and bytes, so needed to be formatted. I wrote standard JS to format them, and to make the formatters available to all components I created a utils/formatMetadata.js file. I ended up doing the metadata differently, but I've left the file in utils as an example of a piece of JS work that solved a problem at the time.
 
-### Audio metadata
-I wanted to show audio metadata in a few places. The duration and file size are saved in seconds and bytes, so need to be formatted. I wrote standard JS to format them, and to make the formatters available to all components I created a utils/metadata.js file.
-
-### Sasdf
-
-
-### The Projects feature
-I followed the patterns of creating audio for creating projects. This roughly involved:
+### d. The Projects feature
+I followed the same process of creating Audio for creating Projects. This roughly involved:
 1. Added Project API calls for all CRUD operations to utils/api.js. 
 2. In api.js, instead of having 2 interceptors for audio and projects, I used one (called 'attachToken') for both (The interceptor relates to linking a logged in user with an audio file or project).
 3. Added a new route to App.jsx
@@ -213,17 +227,70 @@ I followed the patterns of creating audio for creating projects. This roughly in
 5. Created pages/ProjectsNew.jsx for creating new projects
 6. Created project detail page
 
-### Tidy up apis
+### e. Tidy up apis
 My initial API for the audio files endpoint was just called `api`. When I eventually had projectApi and transcriptionApi, having one just called api looked confusing. So, I went back and renamed it to audioApi for clarity.
 
-### Recorder component
+### f. Recorder component
 This started as my prototype, seeing if the MediaRecorder API, Cloudinary and Assembly AI would work together. As the project developed, a lot of the code in the Recorder became redundant. It made more sense to keep the Recorder component purely for recording, and to redirect the user to an AudioDetail page to enter metadata. This kept the component clean and tidy.
 
-
-
-
-### PageTitle component
+### g. PageTitle component
 I wanted to give every page a ``<title>`` which would also double as the page's H1 title. I thought a small component would be handy here.
+
+
+## 3. Responsive design
+
+I used a combination of Shadcn components and custom CSS to create clean, responsive screens that work well on desktop and mobile. 
+
+## 4. API integration
+
+The project uses the following APIs. 
+
+#### MediaStream Recording API
+
+Capture audio in the browser. This not an external API, but a built-in Web API provided by the browser.
+https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API
+
+#### Cloudinary
+
+Store audio files in the cloud. I'm using Cloudinary's upload API to store files and their CDN to serve them.
+https://cloudinary.com/
+
+#### Assembly AI
+
+Speech to text platform. Of the three APIs I list here, this best fits the bill in terms of external API usage, as I use their API key fully here.
+https://www.assemblyai.com/
+
+
+## 5. Testing
+
+Set up unittests in all my Django models. Regularly checked and all passed.
+
+Also did 2 rounds of user testing with 5 users. Several bugs were picked up, some of which I describe in the Challenges section below.
+
+## 6. Version control
+
+Used Github as per previous assignments. 
+
+Made regular commits.
+
+Used feature branches.
+
+## 7. Deployment
+
+Successfully deployed to Render.com. Used a Web service and a Postgres. See Challenges section below for more details.
+
+## 8. Additional bonus features
+
+#### Search functionality
+
+As a bonus feature, I created a search page which searched in the following places:
+
+- Title and description of audio files
+
+- Title and description of projects
+
+- Content of transcriptions.
+
 
 <br>
 <br>
@@ -233,7 +300,7 @@ I wanted to give every page a ``<title>`` which would also double as the page's 
 ## Authentication
 I followed the Unit 16 tutorial so it largely went smoothly. A challenge I encountered invovled my already having an /api/ url pattern from the earlier audio part. I had to use /api/auth/ instead and updated the tutorial code accordingly. I obviously wouldn't have encountered this if I had done the Authentication before doing the audio recording component, so will know for future projects.
 
-## Moving AssemblyAI API call from React to Django
+## Moving Assembly AI API call from React to Django
 I built the original prototype fully in React. This included the transcription API call to AssemblyAI. On Yoni's advice, I moved it from React to Django. This avoided security concerns.
 
 ## Audio files and their creator
@@ -246,7 +313,7 @@ When trying to assign and filter audio by the logged-in user, I kept getting 500
 5. Updated the queryset request in AudioView to filter for audio files created by the logged-in user (or files they're co-writer on).
 
 ## Deploying to Render
-I followed the Unit 11 deployment instructions, but it didn't seem to cover the React side of things.
+
 
 In a case of terrible timing, Render switched off their community forums on March 24th (the day I started trying to deploy) so any relevant information in the forums was gone.
 
@@ -254,9 +321,9 @@ I went around in circles and found a series on YouTube: https://www.youtube.com/
 
 I spent hours hitting various walls. One was with "vite: Permission denied". The problem was addressed in the Render forums (based on Google searches) but the pages were gone. I found this reference to the dead forum link: https://www.reddit.com/r/vercel/comments/1i9rur8/permission_denied_while_deploying_vite_app_on/
 
-I hit issues around file case. At some point, I must have changed my lowercase component filenames to title case (from recorder to Recorder). GIthub didn't update though. Had to force a rename of the files in github.
+I also hit issues around file case. At some point, I must have changed my lowercase component filenames to title case (from recorder to Recorder). GIthub didn't update though. Had to force a rename of the files in github.
 
-Eventually I gave up and went back to the course videos. It turns out Yoni explained the approach of static files in Unit 15 (from around 48 minutes on), which I watched at the time but forgot about. Once I followed that, it was relatively plain sailing.
+Eventually I found the part in Unit 15 where Yoni described deployment (from around 48 minutes on), which I watched at the time but forgot about. Once I followed that, it was relatively plain sailing!
 
 ## Processing issue with Assembly AI
 A user tester encountered a bug when transcribing audio. They pressed the Transcribe button, and then received the error message ``Unexpected token '<', "<html> <"... is not valid JSON``. They pressed the button again and it worked.
@@ -274,7 +341,7 @@ For future development, I would address the issue with one (or more) of the abov
 
 ## Adding a co-writer
 
-My approach to adding a co-writer here is not ideal. It exposes all usernames, which is fine for this college project, but in a real-world app it's not scaleable. Ideally, I would allow co-writers to be added via email - they recieve the invite, accept and create an account. But, given time constraints, I will stick to the dropdown for now.
+My approach to adding a co-writer here is not ideal. It exposes all usernames, which is fine for this college project, but in a real-world app it's not scaleable and has privacy issues. Ideally, I would allow co-writers to be added via email - they recieve the invite, accept and create an account. But, given time constraints, I will stick to the dropdown for now.
 
 Adding a co-writer also opened up a lot of permissions issues that I hadn't planned for. A co-writer:
 - Shouldn't be able to delete a project they were invited to
@@ -299,32 +366,6 @@ This was part of my original plan, but I felt that the Songwriter/Co-writer role
 ## Adding co-writers
 The co-writer select dropdown that I've implemented on the Project Detail page is a 'proof of concept' rather than the ideal setup. I would like to build an 'Invite a co-writer' email system, where users could send email invitations to others. This would avoid my current setup of simply listing all available users, which is not scaleable and has obvious privacy issues.
 
-<br>
-<br>
-
-
-My To Do:
-DONE - Show transcriptions in audio detail page
-DONE - Make sure files are assigned to users
-DONE - Create projects
-DONE - Set up projectDetail pages, showing metadata and the assigned audio files
-DONE - Split recording and file list into separate pages
-DONE - Tidy up the Recorder component
-DONE - Add co-writers to a project
-DONE - Add permissions for cowriters
-DONE - I still have to figure out how to do categorization. I need a category model
-DONE - Add testing for all models
-DONE - Spruce up how it all looks (the UI, I mean)
-DONE - Add page titles
-DONE - Profile page
-- Use Ruff linter
-- Documentation
-DONE - Add docstrings to models
-DONE - Create postgres in Render
-DONE - Deploy successfully
-DONE - Give feedback when Login and Register buttons are pressed
-DONE - Bonus: Search transcripts
-- Bonus: Share projects with the public
 
 
 

@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { getAudios, createAudio, updateAudio, deleteAudio } from './utils/api'
 import AudioModal from './components/Modal'
 import Recorder from "./components/Recorder"
-import { formatDuration, formatFileSize } from './utils/formatMetadata'
 
 import "./App.css";
 
