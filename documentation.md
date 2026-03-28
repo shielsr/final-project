@@ -179,10 +179,10 @@ It look a lot of work to get the MediaRecording API, Cloudinary and AssemblyAI a
 #### Recording
 - User records audio -> blob created in React using MediaRecording API
 - Blob is uploaded to Cloudinary -> URL returned
-- URL saved to Django Audio model
+- Cloudinary URL is saved to Django Audio model
 
 #### Transcribing
-- User clicks Transcribe -> React sends the Cloudinary URL and audio_id to Django
+- The user clicks Transcribe -> React sends the Cloudinary URL and audio_id to Django
 - Django gives the Cloudinary URL to AssemblyAI
 - AssemblyAI transcribes the audio stream from Cloudinary and returns the text
 - Django saves the text to the Transcription model and returns it to React
@@ -196,7 +196,7 @@ Save the transcription back to Django
 
 
 ### The Audio/Project relationship
-I wanted users to be able to record without having to add it to a project. It's all about convenience - a user should be able to come back later and assign the file to a project (if they want). Also, when a project is deleted, the audio files are not be deleted, and just return to the unassigned pool.
+I wanted users to be able to record without having to add it to a project. It's all about convenience - a user should be able to record audio on the go, then return to it later to assign it to a project (if they want). Also, when a project is deleted, the audio files are not be deleted; they return to the unassigned pool.
 
 ### Audio metadata
 I wanted to show audio metadata in a few places. The duration and file size are saved in seconds and bytes, so need to be formatted. I wrote standard JS to format them, and to make the formatters available to all components I created a utils/metadata.js file.
