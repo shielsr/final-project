@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class SongwriterProfile(models.Model):
+    """ Additional profile info about each user """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
     website = models.CharField(max_length=200, blank=True)
@@ -11,6 +12,7 @@ class SongwriterProfile(models.Model):
         return f"{self.user.username}'s profile"
     
 class Project(models.Model):
+    """ Projects allow users to group audio files """
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
     cowriters = models.ManyToManyField(User, through='CoWriter', related_name='cowriting_projects', blank=True)
     title = models.CharField(default='my project', max_length=120)
@@ -21,6 +23,8 @@ class Project(models.Model):
         return self.title
 
 class Category(models.Model):
+    """ Categories are used to tag audio files.
+    The are grouped based on type and song section, with scope for more."""
     GROUP_CHOICES = [
         ('type', 'Type'),
         ('section', 'Section'),
@@ -32,6 +36,8 @@ class Category(models.Model):
         return self.name
         
 class Audio(models.Model):
+    """ When a recording is made, data is stored here.
+    Cloudinary URLs are stored here. """ 
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='audios', default=1)
     title = models.CharField(default='my audio', max_length=120)
     description = models.TextField(blank=True)
@@ -45,6 +51,7 @@ class Audio(models.Model):
         return self.title
     
 class CoWriter(models.Model):
+    """ Songwriters who are added to a project become co-writers in this table """ 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=100, blank=True)
@@ -54,6 +61,7 @@ class CoWriter(models.Model):
         return f"{self.user.username} on {self.project.title}"
     
 class Transcription(models.Model):
+    """ AssemblyAI transcriptions are stored here """
     audio = models.OneToOneField(Audio, on_delete=models.CASCADE, related_name='transcription')
     content = models.TextField(blank=True)
     transcribed_at = models.DateTimeField(auto_now_add=True)

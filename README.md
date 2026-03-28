@@ -13,20 +13,21 @@ https://github.com/shielsr/final-project
 
 
 ## Project goal
-The goal of the project is to allow writers to post 'fan fiction' stories about their favourite TV shows, films, books, etc.
+The goal of the project is to create a voice memo app for songwriters (or any type of creator) that allows them to record and manage their ideas.
 
 ## Features
-### As a writer, the user can:
+### As a Songwriter, the user can:
 - Register, log in and out
-- Write and edit stories
-- Add chapters to their stories
-- Publish and unpublish their stories
-- Receive direct messages from other users
+- Record audio files
+- Create projects
+- Add audio files to projects
+- Add co-writers to projects
+- Transcribe audio
 
-### As a reader, the user can:
+### As a Co-writer, the user can:
 - Register, log in and out
-- Read stories from other users
-- Send direct messages to authors
+- Be added to another user's project
+- Add audio files to another user's project
 
 <br>
 <br>
@@ -43,9 +44,6 @@ The navbar is responsive on desktop and mobile.
 
 The buttons change based on logged-in status.
 
-The buttons also change based on the user's role. Admins (i.e. 'staff' users in the `auth_user` table) can access the Django Admin dashboard.
-
-
 <br>
 
 ## Register
@@ -54,83 +52,82 @@ Users can register via the form on /register.
 
 Their passwords are hashed in the database. 
 
-Once they fill out the form, they are directed to /login, where they can enter their new credentials.
+Once they submit the form, they are automatically logged in.
 
 <br>
 
-## Logging into admin
+## Homepage (/)
 
-To access the admin dashboard, use the username rob and password 13546cb6e3c7f9ce8af4e0033760d95f (I've only included the password here in this zip, not in the Github readme)
+The homepage has gives a brief introduction to the app and what it can do.
 
-
-<br>
-
-## Homepage story list
-
-The homepage shows a list of all the published stories.
+The Login and Register buttons appear when logged out, and don't show when logged in.
 
 <br>
 
-## Writing stories
+## Record (/record)
 
-Logged-in users click 'New story' in the nav bar or 'Write a new story' in the Actions sidebar to open the form.
+After registering or loggin in, the user is sent directly to the Record page.
 
-They fill out the form and submit it.
+Recording is the primary action within the app, hence why the user is sent here first.
 
-On the story detail page, the user can add chapters, edit their story, delete their story, or publish it as is.
-
-<br>
-
-## Adding chapters
-
-Writers click 'Add new chapter'. This takes them to a form, where they can write their story.
+As soon as the user stops recording, they are taken to the Audio detail page.
 
 <br>
 
-## Drag and drop chapter reorder
+## Audio detail (/audio/idNumber)
 
-On the story detail page on desktop, users can change the order of their chapters. Simply drag and drop the handles by the chapter names.
+Edit audio metadata, including name and description.
 
-<br>
+The title of the audio file is automatically generated based on the date and time of recording.
 
-## Draft stories
+Users can press 'Transcribe' to generate a speech-to-text transcription of their audio in any language.
 
-Draft stories don't appear on the homepage. To find your draft story again, go to your account page at /profile and scroll to the bottom.
+Tag the file with multiple categories (these can be filtered on the Audio list page).
 
-<br>
-
-## Delete a story
-
-On the story detail page, click 'Delete story'. The user will be taken to a confirmation page.
+Add the file to a project. The project dropdown contains all the projects that the user created, as well as any they were added to by another user.
 
 <br>
 
-##  View my account
+## My files (/audio)
 
-Logged-in users can see their account on the /profile page
+A list of all the audio files created by the user.
 
-They can edit their details or change the default profile pic here.
-
-<br>
-
-## Sending messages
-
-Users can send messages to writers.
-
-Go to the story detail page of a story written by a different user.
-
-Click 'Message the author' and fill out the form.
+Filter them by category.
 
 <br>
 
-## Receiving messages
+## Projects (/projects)
 
-Users can see messages they've received by clicking 'Mailbox' in the navbar
+A list of the projects created by the user, as well as projects they've been added to by another user.
+
+Press the 'Create new project' button to create a new project.
 
 <br>
 
-## Archived messages
+## Project detail (/project/idNumber)
 
-Messages can be archived from the Mailbox.
+Edit project data, including name and description.
 
-Archived messages can then be seen in the private mails/archived page.
+See all the audio files that are part of the project.
+
+Add/remove co-writers on the project.
+
+Delete the project.
+
+<br>
+
+# Search (/search)
+
+Search for keywords in the following places:
+
+- Title and description of audio files
+
+- Title and description of projects
+
+- Content of transcriptions.
+
+<br>
+
+# Profile
+
+Add a bio and personal website.

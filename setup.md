@@ -2,23 +2,23 @@
 
 ## Part 1: New Postgres on Render.com
 
-Create a new Postgres on Render.com
+Create a new Postgres on Render.com.
 
-Name the postgres and database
+Name the postgres and database.
 
-Choose the Free plan and press Create Database
+Choose the Free plan and press Create Database.
 
-Copy the Internal Database URL to your clipboard (you'll need it shortly)
+Copy the Internal Database URL to your clipboard (you'll need it shortly).
 
 <br>
 
 ## Part 2: New Web Service on Render.com
 
-Create a new Web Service on Render.com
+Create a new Web Service on Render.com.
 
 Select the Git repository where you committed your files.
 
-Give your web service a name
+Give your web service a name.
 
 
 ### Additional settings:
@@ -35,9 +35,11 @@ Start Command:
 
 gunicorn backend.wsgi:application
 
+<br>
+
 ## Part 3: Environment variables
 
-Create the following environment variables.
+Create the following environment variables:
 
 ASSEMBLYAI_API_KEY - Get this from https://www.assemblyai.com/ (see Part 4 below)
 
@@ -59,12 +61,34 @@ VITE_CLOUDINARY_CLOUD_NAME - Get this from https://cloudinary.com/ (see Part 5 b
 
 VITE_CLOUDINARY_UPLOAD_PRESET - Same as above
 
+<br>
+
 ## Part 4: Get an API key from Assembly AI
 
-To set up the Transcribing service on the Audio Detail page, first create an account on https://www.assemblyai.com/
+To set up the Transcribing service on the Audio Detail page, first create an account on https://www.assemblyai.com/.
 
-Go to 'API keys' and create a new one
+Go to 'API keys' and create a new one.
 
-Copy and paste the key into the Environment variable in Render.
+Copy and paste the key into the ASSEMBLYAI_API_KEY environment variable in Render..
 
-## Part 5: Get a Cloudinary 
+<br>
+
+## Part 5: Set up Cloudinary
+
+Create an account on https://cloudinary.com/
+
+Get your Cloud name from Settings/Product Environments and paste it into the VITE_CLOUDINARY_CLOUD_NAME variable in Render.
+
+Go to Settings/Upload and press Add Upload Preset.
+
+Give it a name. This is what you'll put in the VITE_CLOUDINARY_UPLOAD_PRESET variable in Render.
+
+Make sure you select Signing mode: Unsigned, to allow direct uploading from the browser.
+
+<br>
+
+## Appendix
+
+I've already ran npm run build on the frontend and committed this to Github.
+
+The subsequent uv run manage.py collectstatic is ran by the Build command in Render.
