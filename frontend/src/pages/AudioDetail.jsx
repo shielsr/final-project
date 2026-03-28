@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { formatDuration, formatFileSize } from '../utils/formatMetadata'
 import { updateAudio, audioApi, getProjects, getTranscription, deleteAudio, getCategories } from '../utils/api'
 import Transcriber from '../components/Transcriber'
 import { useAuth } from '../AuthContext'
