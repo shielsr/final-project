@@ -25,6 +25,9 @@ from django.views.static import serve
 from rest_framework import routers
 from overnote import views
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 router = routers.DefaultRouter()
